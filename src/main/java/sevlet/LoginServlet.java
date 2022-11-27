@@ -48,14 +48,12 @@ public class LoginServlet extends HttpServlet {
         user.setName(userName);
         user.setTotalGame(totalGame);
         user.setCurrentRoomId(Room.START_ROOM_ID);
-       // user.setLevel(Room.START_LEVEL);
-        user.setLevel(3);//удалить
+        user.setLevel(Room.START_LEVEL);
         user.setPoint(User.START_POINT);
         user.setEndedQuest(new ArrayList<>());
         userRepository.add(userName, user);
 
         synchronized (session) {
-           // session.setAttribute("username", userName);
             session.setAttribute("user", user);
         }
     }

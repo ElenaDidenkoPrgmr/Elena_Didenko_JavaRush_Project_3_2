@@ -35,18 +35,13 @@ public class RoomServlet extends HttpServlet {
         roomRepository = (RoomRepository) servletContext.getAttribute("rooms");
         userRepository = (UserRepository) servletContext.getAttribute("users");
         npcRepository = (NpcRepository) servletContext.getAttribute("npcs");
-
-        System.out.println("Init method with ServletConfig ended");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         HttpSession session = request.getSession();
 
         User user = (User) request.getSession().getAttribute("user");
-
-
 
         int currentRoomId = user.getCurrentRoomId();//--
         int userLevel = user.getLevel();

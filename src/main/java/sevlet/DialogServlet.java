@@ -29,7 +29,6 @@ public class DialogServlet extends HttpServlet {
         npcRepository = (NpcRepository) servletContext.getAttribute("npcs");
         dialogRepository = (DialogRepository) servletContext.getAttribute("dialogs");
         questRepository = (QuestRepository) servletContext.getAttribute("quests");
-        System.out.println("Init dialog end");
     }
 
 
