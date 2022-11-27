@@ -1,0 +1,207 @@
+[{
+  "id": 8,
+  "text": "Это тренировочный квест. Он всегда выигрышный)",
+  "answers": [
+    {
+      "text": "Я уверен в победе",
+      "isRight": 1
+    },
+    {
+      "text": "Справлюсь с игрой легко",
+      "isRight": 1
+    }
+
+  ]
+},
+  {
+    "id": 1,
+    "text": "Что будет в результате выполнения операции \n 2 + 2 == 5 && 12 / 4 == 3 || 5 % 3 ?",
+    "answers": [
+      {
+        "text": "true",
+        "isRight": 1
+      },
+      {
+        "text": "false"
+      },
+      {
+        "text": "null"
+      },
+      {
+        "text": "0"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "text": "class Parent{\n    public static String getName(){\n        return \"Parent\";\n    }\n}\nclass Child extends Parent{\n    public static String getName(){\n        return \"Child\";\n    }\n}\npublic class StaticTest{\n    public static void main(String[] args){\n        Parent a = new Child();\n        System.out.println(a.getName());\n    }\n}",
+    "answers": [
+      {
+        "text": "Parent",
+        "isRight": 1
+      },
+      {
+        "text": "Child"
+      },
+      {
+        "text": "Compilation error"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "text": "Что выведется в консоль?\nBigDecimal bd1 = new BigDecimal(\"0.2\");\nBigDecimal bd2 = new BigDecimal(0.2);\nSystem.out.println(bd1.equals(bd2));",
+    "answers": [
+      {
+        "text": "true"
+      },
+      {
+        "text": "false",
+        "isRight": 1
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "text": "Что будет, если скомпилировать и выполнить код:\n\nclass Nullable{\n    public static String hello(){\n        return \"Hello!\";\n    }\n}\n\npublic class Test{\n    public static void main(String[] args){\n        Nullable nullable = null;\n        System.out.println(nullable.hello());\n }\n}",
+    "answers": [
+      {
+        "text": "В консоль будет выведено \"Hello!\"",
+        "isRight": 1
+      },
+      {
+        "text": "NullPointerException"
+      },
+      {
+        "text": "Код выполнится без ошибок, но в консоль ничего не будет выведено"
+      },
+      {
+        "text": "Ошибка во время компиляции"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "text": "Каким будет результат выполнения кода?\n\n     String[] names = {\"Java\", \"Kotlin\", \"Java\"};\n        String name = \"Java\";\n        Predicate predicate = name::equals;\n        System.out.print(Stream.of(names).filter(predicate).count() + \" \");\n        name = \"Kotlin\";\n        System.out.print(Stream.of(names).filter(predicate).count());",
+    "answers": [
+      {
+        "text": "Не скомпилируется"
+      },
+      {
+        "text": "2 1"
+      },
+      {
+        "text": "2 + Исключение"
+      },
+      {
+        "text": "2 2",
+        "isRight": 1
+      },
+      {
+        "text": "Ошибка во время компиляции"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "text": "Как потоки в java соотносятся с потоками оперционной системы",
+    "answers": [
+      {
+        "text": "1:1 (1 экземпляр Thread -> 1 поток ОС)",
+        "isRight": 1
+      },
+      {
+        "text": "1:N (1 экземпляр Thread -> N потоков ОС)"
+      },
+      {
+        "text": "N:1 (N экземпляров Thread -> 1 поток ОС)"
+      },
+      {
+        "text": "N:M (N экземпляров Thread -> M потоков ОС)"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "text": "В каком списке будет ТРИ элемента после выполнения кода? \n List<Integer> integers = new ArrayList<>();\n        integers.add(1);\n        integers.add(2);\n\n        List<Integer> refList = integers;\n        List<Integer> copy = List.copyOf(integers);\n        List<Integer> collected = integers.stream().collect(Collectors.toList());\n        List<Integer> unmodifiable = Collections.unmodifiableList(integers);\n\n        integers.add(3);",
+    "answers": [
+      {
+        "text": "Ни в одном"
+      },
+      {
+        "text": "reflist + collected"
+      },
+      {
+        "text": "copy + unmodifiable"
+      },
+      {
+        "text": "Во всех"
+      },
+      {
+        "text": "reflist + unmodifiable",
+        "isRight": 1
+      }
+    ]
+  },
+
+  {
+    "id": 9,
+    "text": "Какие варианты инициализации массива правильные? \n \n1) int[] array = new int[];\n2) int[] array = int[];\n3) int[] array = new int[]{1,2,3,4,5};\n4) int[] array = 1,2,3,4,5;\n5) int[] array = new int[5];\n6) int[] array = {1,2,3,4,5};",
+    "answers": [
+      {
+        "text": "3 и 5"
+      },
+      {
+        "text": "5"
+      },
+      {
+        "text": "1, 3, 5, 6"
+      },
+      {
+        "text": "Все правильные"
+      },
+      {
+        "text": "3, 5, 6",
+        "isRight": 1
+      }
+    ]
+  },
+
+  {
+    "id": 10,
+    "text": "В чём разница checked и unchecked исключений? \n",
+    "answers": [
+      {
+        "text": "checked можно ловить  в блоке try-catch, unchecked - нельзя"
+      },
+      {
+        "text": "checked ожидаются JVM, поэтому затраты на поддержку меньше"
+      },
+      {
+        "text": "обработка checked исключений обязательна и проверяется во время компиляции",
+        "isRight": 1
+      },
+      {
+        "text": "checked исключения показывают ошибки бизнес-логики, unchecked - плохо написанный код"
+      }
+    ]
+  },
+
+
+  {
+    "id": 11,
+    "text": "Что выведется в консоль? (интерфейс В расширяет интерфейс А) \n   public interface A{\n        default String get(){\n            return \"A\";\n        }\n    }\n    public interface B extends A{\n        default String get(){\n            return \"B\";\n        }\n    }\n   class Concert implements A, B {}\n\n        A a = new Concert();\n        System.out.println(a.get());}",
+    "answers": [
+      {
+        "text": "A"
+      },
+      {
+        "text": "B",
+        "isRight": 1
+      },
+      {
+        "text": "Ошибка компиляции"
+      }
+    ]
+  }
+]

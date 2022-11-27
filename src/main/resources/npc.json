@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "name": "Элли",
+    "avatar": "/img/elly.png",
+    "description": "Элли добрая и весёлая",
+    "startMessageId": 1
+  },
+  {
+    "id": 2,
+    "name": "Ким",
+    "avatar": "/img/kim.png",
+    "description": "Ким умная и ироничная",
+    "startMessageId": 4
+  },
+  {
+    "id": 3,
+    "name": "Риша",
+    "avatar": "/img/risha.png",
+    "description": "Риша терпеливый и мудрый",
+    "startMessageId": 4
+  },
+  {
+    "id": 4,
+    "name": "Диего",
+    "avatar": "/img/diego.png",
+    "description": "Диего не такой простой, как кажется",
+    "startMessageId": 7
+  },
+  {
+    "id": 5,
+    "name": "Zoidberg",
+    "avatar": "/img/zoidberg.png",
+    "description": "Zoidberg странный, но добродушный",
+    "startMessageId": 10
+  },
+  {
+    "id": 6,
+    "name": "Капитан Запп",
+    "avatar": "/img/zapp.png",
+    "description": "Капитан Запп - с ним шутки плохи",
+    "startMessageId": 13
+  },
+  {
+    "id": 7,
+    "name": "Профессор",
+    "avatar": "/img/professor.png",
+    "description": "Профессор немного сумашедший",
+    "startMessageId": 16
+  },
+  {
+    "id": 8,
+    "name": "Аноним",
+    "avatar": "/img/anonymous.png",
+    "description": "Анонимный аноним, мы ничего о нём не знаем",
+    "startMessageId": 18
+  },
+  {
+    "id": 9,
+    "name": "Джулио",
+    "avatar": "/img/julio.png",
+    "description": "Рубаха-парень",
+    "startMessageId": 21
+  },
+  {
+    "id": 10,
+    "name": "Доктор Джон",
+    "avatar": "/img/Dr-John.png",
+    "description": "И тебя вылечу...",
+    "startMessageId": 23
+  }
+]
