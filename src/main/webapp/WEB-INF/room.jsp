@@ -28,7 +28,8 @@
                 <tbody>
                 <c:forEach var="i" begin="<%=Room.START_LEVEL%>" end="<%=Room.FINISH_LEVEL%>">
                     <tr>
-                        <td>Уровень ${i}</td>
+                        <td><p>Уровень ${i}</p>
+                            <p>${i * 10} баллов</p></td>
                         <td>
 
                             <div class="col-md-12 text-center p-2">
