@@ -28,19 +28,15 @@
 </div>
 
 <div  class=" h-100 d-flex align-items-center justify-content-center">
-
     <div class="card" id="anchor-quest">
         <div class="card-header">Вопрос от  ${npc.getName()} по теме ${currentRoom.getName()}:</div>
         <div class="card-body"> <pre> ${quest.getText()}</pre></div>
         <div class="card-footer">Варианты ответа:<form action="${pageContext.request.contextPath}/quest" method="post">
-
             <c:forEach var="answer" items="${quest.getAnswers()}">
                 <div class="form-check">
-
                     <input class="form-check-input" type="radio" name="questAnswer" id="answers"
                            value="${answer.isRight()}">
                     <label class="form-check-label" for="answers">${answer.getText()}</label>
-
                 </div>
             </c:forEach>
             <input class="btn btn-primary" type="submit" value="Ответить">
@@ -48,6 +44,5 @@
         </div>
     </div>
 </div>
-
 </body>
 

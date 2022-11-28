@@ -15,7 +15,7 @@
     }
     </style>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $("#myModalResultQuest").modal('show');
         });
     </script>
@@ -23,17 +23,13 @@
 </head>
 
 <body>
-<div >
+<div>
     <%@include file="room.jsp" %>
 </div>
-
-
 
 <div class="modal" id="myModalResultQuest">
     <div class="modal-dialog">
         <div class="modal-content">
-
-
 
             <!-- Modal Header -->
             <div class="modal-header">
@@ -58,14 +54,11 @@
                     </div>
                 </c:when>
             </c:choose>
-            <!-- Modal body -->
-
 
             <!-- Modal footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
-
         </div>
     </div>
 </div>

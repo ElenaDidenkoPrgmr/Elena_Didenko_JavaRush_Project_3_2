@@ -1,8 +1,10 @@
-package sevlet;
+package servlet;
 
 import com.javarush.entity.Room;
 import com.javarush.entity.User;
 import com.javarush.repository.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -17,7 +19,8 @@ import java.util.ArrayList;
 
 @WebServlet(name = "loginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {
-    private UserRepository userRepository = null;
+    private static final Logger LOGGER = LogManager.getLogger(LoginServlet.class);
+    private UserRepository userRepository;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -27,7 +30,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         initUser(request);
         response.sendRedirect("/room");
     }
@@ -35,13 +38,13 @@ public class LoginServlet extends HttpServlet {
     private void initUser(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String userName = request.getParameter("username");
+
         User user = new User();
         int totalGame = User.START_TOTAL_GAME;
 
-        if (userName != null) {
-            userName.trim();
-        } else {
-            userName = (String) request.getSession().getAttribute("username");
+        if (userName == null) {
+            User existingUser = (User) request.getSession().getAttribute("user");
+            userName = existingUser.getName() ;
             totalGame = userRepository.get(userName).getTotalGame() + 1;
         }
 
@@ -56,5 +59,6 @@ public class LoginServlet extends HttpServlet {
         synchronized (session) {
             session.setAttribute("user", user);
         }
+        LOGGER.debug("User: " + userName + " starts game");
     }
 }

@@ -1,9 +1,7 @@
-package sevlet;
+package servlet;
 
 import com.javarush.dto.RoomDTO;
 import com.javarush.entity.*;
-import com.javarush.repository.DialogRepository;
-import com.javarush.repository.NpcRepository;
 import com.javarush.repository.QuestRepository;
 
 import javax.servlet.ServletConfig;
@@ -18,19 +16,14 @@ import java.io.IOException;
 
 @WebServlet(name = "questServlet", value = "/quest")
 public class QuestServlet extends HttpServlet {
-    private NpcRepository npcRepository = null;
-    private DialogRepository dialogRepository = null;
     private QuestRepository questRepository = null;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         ServletContext servletContext = config.getServletContext();
-        npcRepository = (NpcRepository) servletContext.getAttribute("npcs");
-        dialogRepository = (DialogRepository) servletContext.getAttribute("dialogs");
         questRepository = (QuestRepository) servletContext.getAttribute("quests");
     }
-
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,7 +35,6 @@ public class QuestServlet extends HttpServlet {
             session.setAttribute("quest", quest);
         }
         getServletContext().getRequestDispatcher("/WEB-INF/quest.jsp").forward(request, response);
-
     }
 
     @Override
@@ -54,15 +46,12 @@ public class QuestServlet extends HttpServlet {
         if ("true".equals(questAnswer)) {
             setUserLevel(user, session);
             session.setAttribute("resultQuest", true);
-
         }else session.setAttribute("resultQuest", false);
 
         RoomDTO currentRoom = (RoomDTO) session.getAttribute("currentRoom");
         Integer currentRoomId = currentRoom.getId();
         user.getEndedQuest().add(currentRoomId);
-
         getServletContext().getRequestDispatcher("/WEB-INF/questOver.jsp").forward(request, response);
-
     }
 
     private void setUserLevel(User user, HttpSession session) {

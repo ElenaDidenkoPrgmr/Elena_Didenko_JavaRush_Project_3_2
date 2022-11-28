@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.apache.catalina.LifecycleException;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.WebResourceSet;
 import org.apache.catalina.core.StandardContext;
@@ -13,12 +12,11 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.EmptyResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
-import org.apache.tomcat.util.scan.Constants;
-import org.apache.tomcat.util.scan.StandardJarScanFilter;
-
-import javax.servlet.ServletException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Main {
+    private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
     private static File getRootFolder() {
         try {
@@ -30,7 +28,8 @@ public class Main {
             } else {
                 root = new File(runningJarPath.substring(0, lastIndexOf));
             }
-            System.out.println("application resolved root folder: " + root.getAbsolutePath());
+            LOGGER.debug("application resolved root folder: " + root.getAbsolutePath());
+
             return root;
         } catch (URISyntaxException ex) {
             throw new RuntimeException(ex);
@@ -38,7 +37,6 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-
         File root = getRootFolder();
         System.setProperty("org.apache.catalina.startup.EXIT_ON_INIT_FAILURE", "true");
         Tomcat tomcat = new Tomcat();
@@ -51,9 +49,8 @@ public class Main {
         if (webPort == null || webPort.isEmpty()) {
             webPort = "8080";
         }
-        
 
-        tomcat.setPort(Integer.valueOf(webPort));
+        tomcat.setPort(Integer.parseInt(webPort));
         tomcat.getConnector(); // Trigger the creation of the default connector
         File webContentFolder = new File(root.getAbsolutePath(), "src/main/webapp/");
         if (!webContentFolder.exists()) {
@@ -63,7 +60,7 @@ public class Main {
         //Set execution independent of current thread context classloader (compatibility with exec:java mojo)
         ctx.setParentClassLoader(Main.class.getClassLoader());
 
-        System.out.println("configuring app with basedir: " + webContentFolder.getAbsolutePath());
+        LOGGER.debug("configuring app with basedir: " + webContentFolder.getAbsolutePath());
 
         // Declare an alternative location for your "WEB-INF/classes" dir
         // Servlet 3.0 annotation will work
@@ -73,7 +70,7 @@ public class Main {
         WebResourceSet resourceSet;
         if (additionWebInfClassesFolder.exists()) {
             resourceSet = new DirResourceSet(resources, "/WEB-INF/classes", additionWebInfClassesFolder.getAbsolutePath(), "/");
-            System.out.println("loading WEB-INF resources from as '" + additionWebInfClassesFolder.getAbsolutePath() + "'");
+            LOGGER.debug("loading WEB-INF resources from as '" + additionWebInfClassesFolder.getAbsolutePath() + "'");
         } else {
             resourceSet = new EmptyResourceSet(resources);
         }
@@ -81,19 +78,7 @@ public class Main {
         ctx.setResources(resources);
 
         tomcat.start();
+        LOGGER.debug("Tomcat started successful, webPort: " + webPort);
         tomcat.getServer().await();
     }
-   /*public static void main(String[] args) throws LifecycleException, ServletException {
-       String contextPath = "/UploadApp";
-       String webappDir = new File("webapp").getAbsolutePath();
-
-       Tomcat tomcat = new Tomcat();
-       tomcat.setBaseDir("temp");
-       tomcat.setPort(8080);
-
-       tomcat.addWebapp(contextPath, webappDir);
-
-       tomcat.start();
-       tomcat.getServer().await();
-   }*/
 }

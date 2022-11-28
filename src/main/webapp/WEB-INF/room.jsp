@@ -11,15 +11,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
-
     <script src="${pageContext.request.contextPath}/js/bootstrap.bundle.js"></script>
 </head>
-<body>
 
+<body>
 <div class="container-fluid p-3 bg-primary text-white text-center">
     <h1>Желаем удачи, ${user.getName()}!</h1>
 </div>
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-sm-6 border">
@@ -31,20 +29,16 @@
                         <td><p>Уровень ${i}</p>
                             <p>${i * 10} баллов</p></td>
                         <td>
-
                             <div class="col-md-12 text-center p-2">
                                 <c:forEach var="room" items="${applicationScope['rooms'].getRooms()}">
                                     <c:if test="${room.getLevel() == i}">
                                         <c:choose>
-
                                             <c:when test="${  fn:contains(user.getEndedQuest(), room.getId() ) }">
                                                 <form style="display: inline-block"
                                                       action="${pageContext.request.contextPath}/room" method="post">
-
                                                     <input type="hidden" name="nextRoom" value="${room.getId()}">
                                                     <button type="submit" class="btn btn-primary"
                                                             disabled>${room.getName()} </button>
-
                                                 </form>
                                             </c:when>
 
@@ -77,30 +71,22 @@
                                                     <input type="hidden" name="nextRoom" value="${room.getId()}">
                                                     <button type="submit"
                                                             class="btn btn-primary">${room.getName()} </button>
-
                                                 </form>
                                             </c:otherwise>
-
-
                                         </c:choose>
-
                                     </c:if>
                                 </c:forEach>
                             </div>
                         </td>
                     </tr>
-
                 </c:forEach>
                 </tbody>
             </table>
         </div>
-
-
         <div class="col-sm-6 border">
-
             <h3 style="text-align:center;">Познакомтесь с хранителями комнаты</h3>
-            <div class="d-flex justify-content-center" >
-            <h3 style="background-color:green; color:white;"> ${currentRoom.getName()}:</h3>
+            <div class="d-flex justify-content-center">
+                <h3 style="background-color:green; color:white;"> ${currentRoom.getName()}:</h3>
             </div>
             <div class="d-flex justify-content-around">
 
@@ -120,24 +106,18 @@
                             </form>
                         </div>
                     </div>
-
                 </c:forEach>
-
-
             </div>
         </div>
     </div>
 </div>
 
 <div class="container mt-3">
-
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
         Статистика
     </button>
 </div>
-<!-- The Modal -->
+
 <%@include file="statistics.jsp" %>
-
-
 </body>
 </html>

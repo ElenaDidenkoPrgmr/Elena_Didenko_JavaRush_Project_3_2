@@ -1,4 +1,4 @@
-package sevlet;
+package servlet;
 
 import com.javarush.dto.RoomDTO;
 import com.javarush.entity.Npc;
@@ -6,11 +6,10 @@ import com.javarush.entity.Room;
 import com.javarush.entity.User;
 import com.javarush.repository.NpcRepository;
 import com.javarush.repository.RoomRepository;
-import com.javarush.repository.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,44 +17,42 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @WebServlet(name = "roomServlet", value = "/room")
 public class RoomServlet extends HttpServlet {
+    private static final Logger LOGGER = LogManager.getLogger(RoomServlet.class);
     private RoomRepository roomRepository = null;
-    private UserRepository userRepository = null;
     private NpcRepository npcRepository = null;
-
+    User user = null;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         ServletContext servletContext = config.getServletContext();
         roomRepository = (RoomRepository) servletContext.getAttribute("rooms");
-        userRepository = (UserRepository) servletContext.getAttribute("users");
         npcRepository = (NpcRepository) servletContext.getAttribute("npcs");
+    }
+
+    @Override
+    public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        user = (User) httpServletRequest.getSession().getAttribute("user");
+        super.service(request, response);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        User user = (User) request.getSession().getAttribute("user");
-
-        int currentRoomId = user.getCurrentRoomId();//--
-        int userLevel = user.getLevel();
+        int currentRoomId = user.getCurrentRoomId();
         if (currentRoomId == Room.FINISH_ROOM_ID) {
             getServletContext().getRequestDispatcher("/WEB-INF/gameOver.jsp").forward(request, response);
-            return;
-        }
-        if (userLevel == Room.FINISH_LEVEL) {
-            getServletContext().getRequestDispatcher("/WEB-INF/gameOver.jsp").forward(request, response);
+            LOGGER.debug("User: " + user.getName() + "ends game");
             return;
         }
 
         Room currentRoom = roomRepository.get(currentRoomId);
-
         RoomDTO roomInfo = RoomDTO.builder()
                 .id(currentRoomId)
                 .name(currentRoom.getName())
@@ -69,20 +66,15 @@ public class RoomServlet extends HttpServlet {
             npcList.add(npcRepository.get(npcId));
         }
         session.setAttribute("npcs", npcList);
-
         getServletContext().getRequestDispatcher("/WEB-INF/room.jsp").forward(request, response);
-
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Integer nextRoom = Integer.valueOf(request.getParameter("nextRoom"));
         if (nextRoom != null) {
             user.setCurrentRoomId(nextRoom);
         }
         response.sendRedirect("/room");
     }
-
-
 }

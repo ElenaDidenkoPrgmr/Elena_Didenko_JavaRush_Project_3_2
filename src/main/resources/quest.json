@@ -10,7 +10,6 @@
       "text": "Справлюсь с игрой легко",
       "isRight": 1
     }
-
   ]
 },
   {
@@ -186,11 +185,9 @@
       }
     ]
   },
-
-
   {
     "id": 11,
-    "text": "Что выведется в консоль? (интерфейс В расширяет интерфейс А) \n   public interface A{\n        default String get(){\n            return \"A\";\n        }\n    }\n    public interface B extends A{\n        default String get(){\n            return \"B\";\n        }\n    }\n   class Concert implements A, B {}\n\n        A a = new Concert();\n        System.out.println(a.get());}",
+    "text": "Что выведется в консоль? \n   public interface A{\n        default String get(){\n            return \"A\";\n        }\n    }\n    public interface B extends A{\n        default String get(){\n            return \"B\";\n        }\n    }\n   class Concert implements A, B {}\n\n        A a = new Concert();\n        System.out.println(a.get());}",
     "answers": [
       {
         "text": "A"

@@ -1,11 +1,8 @@
-package sevlet;
+package servlet;
 
-import com.javarush.dto.RoomDTO;
 import com.javarush.entity.*;
 import com.javarush.repository.DialogRepository;
 import com.javarush.repository.NpcRepository;
-import com.javarush.repository.QuestRepository;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -20,7 +17,6 @@ import java.io.IOException;
 public class DialogServlet extends HttpServlet {
     private NpcRepository npcRepository = null;
     private DialogRepository dialogRepository = null;
-    private QuestRepository questRepository = null;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -28,23 +24,16 @@ public class DialogServlet extends HttpServlet {
         ServletContext servletContext = config.getServletContext();
         npcRepository = (NpcRepository) servletContext.getAttribute("npcs");
         dialogRepository = (DialogRepository) servletContext.getAttribute("dialogs");
-        questRepository = (QuestRepository) servletContext.getAttribute("quests");
     }
-
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         getServletContext().getRequestDispatcher("/WEB-INF/dialog.jsp").forward(request, response);
-
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-
-        //if (session.getAttribute())
-        //int npcId = (int) session.getAttribute("npc");
 
         Npc npc;
         String npcId = request.getParameter("npc");
@@ -55,11 +44,9 @@ public class DialogServlet extends HttpServlet {
             npc = (Npc) session.getAttribute("npc");
         }
 
-
         String questId = request.getParameter("quest");
         if (questId != null) {
             session.setAttribute("questId",questId);
-
             response.sendRedirect("/quest");
             return;
         }
@@ -74,9 +61,7 @@ public class DialogServlet extends HttpServlet {
             question = dialogRepository.get(questionId);
         }
 
-
         session.setAttribute("question", question);
         response.sendRedirect("/dialog");
-
     }
 }
