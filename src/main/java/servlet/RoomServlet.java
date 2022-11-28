@@ -48,7 +48,7 @@ public class RoomServlet extends HttpServlet {
         int currentRoomId = user.getCurrentRoomId();
         if (currentRoomId == Room.FINISH_ROOM_ID) {
             getServletContext().getRequestDispatcher("/WEB-INF/gameOver.jsp").forward(request, response);
-            LOGGER.debug("User: " + user.getName() + "ends game");
+            LOGGER.debug("User: " + user.getName() + " ends game");
             return;
         }
 
