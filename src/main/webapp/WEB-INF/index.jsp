@@ -16,23 +16,25 @@
 
 </div>
 
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-sm-12">
-            <p>Java-игра. Состоит из заданий-квестов на знание Java. Цель игры: пройти все уровни.  Следующий уровень рразблокируется
-                после успешного прохождения одного квеста текущего уровня. Желаю удачи!
-            </p>
 
-        </div>
-
+<div class="row container">
+    <div class="col-md-3 pt-2 offset-1">
+        <img src="${pageContext.request.contextPath}\img\index.png" class="rounded" alt="Quest">
     </div>
+    <div class=" col-md-8  pt-4">
 
-    <div class="container">
+        <p>Java-игра. Состоит из заданий-квестов на знание Java. Цель игры: пройти все уровни. Следующий уровень
+            разблокируется
+            после успешного прохождения одного квеста текущего уровня. Желаю удачи!
+        </p>
         <div class="row">
-            <div style="height: 150px;" class="col-md-4 offset-md-4 text-center">
-                <p>Готовы начать? Тогда представтесь</p>
+
+
+           <div class="col-md-6 text-center ">
+               <br><br>
+                <h5>Готовы начать?</h5>
                 <form action="${pageContext.request.contextPath}/login" method="post">
-                    <div class="form-group">
+                    <div class="form-group p-2">
                         <label for="usr">Введите имя:</label>
                         <input type="text" class="form-control" id="usr" name="username">
                     </div>
@@ -40,14 +42,17 @@
                         <button type="submit" class="btn btn-primary btn-block">Начать квест</button>
                     </div>
                 </form>
-
             </div>
+            <div class="col-md-5 offset-1">
+                <img src="${pageContext.request.contextPath}\img\index2.png" class="rounded" alt="Quest">
+            </div>
+
         </div>
     </div>
 
 
-</div>
 
+</div>
 
 </body>
 </html>

@@ -5,6 +5,8 @@ import com.javarush.entity.Quest;
 import com.javarush.entity.QuestionNpc;
 import com.javarush.entity.Room;
 import com.javarush.repository.*;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 
 @WebListener
 public class AppContextListener implements ServletContextListener {
+    private static final Logger LOGGER = LogManager.getLogger(AppContextListener.class);
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
