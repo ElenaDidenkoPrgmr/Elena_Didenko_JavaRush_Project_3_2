@@ -113,5 +113,4 @@ public class RepositoryTest {
     void test_containsId_ShouldThrowExceptionWhenKeyIsNull() {
         assertThrows(RepositoryException.class, () -> repository.containsId(null));
     }
-
 }

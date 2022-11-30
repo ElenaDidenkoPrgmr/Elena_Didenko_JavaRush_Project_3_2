@@ -57,5 +57,4 @@ class LoginServiceTest {
         testUser = loginService.initUser(testUser.getName());
         assertEquals(testUser.getTotalGame(),3);
     }
-
 }

@@ -41,6 +41,4 @@ class ServiceTest {
         int expected = 5;
         assertEquals(expected, service.parsingStringToInt("5","valueName",LogManager.getLogger(Service.class)));
     }
-
-
 }
