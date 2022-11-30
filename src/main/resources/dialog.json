@@ -4,11 +4,11 @@
     "answers": [
       {
         "text": "Отлично! Давай поиграем",
-        "nextQuestionId": 2
+        "nextDialogId": 2
       },
       {
         "text": "Если честно, не очень. Я волнуюсь",
-        "nextQuestionId": 3
+        "nextDialogId": 3
       }
     ]
   },
@@ -39,11 +39,11 @@
     "answers": [
       {
         "text": "Конечно! Я хорошо их знаю",
-        "nextQuestionId": 5
+        "nextDialogId": 5
       },
       {
         "text": "Смотря с какой стороны посмотреть",
-        "nextQuestionId": 6
+        "nextDialogId": 6
       }
     ]
   },
@@ -84,11 +84,11 @@
     "answers": [
       {
         "text": "Ну давай попробуем",
-        "nextQuestionId": 8
+        "nextDialogId": 8
       },
       {
         "text": "Списки - отличная тема",
-        "nextQuestionId": 9
+        "nextDialogId": 9
       }
     ]
   },
@@ -129,11 +129,11 @@
     "answers": [
       {
         "text": "И я люблю массивы",
-        "nextQuestionId": 11
+        "nextDialogId": 11
       },
       {
         "text": "Ну такое....",
-        "nextQuestionId": 12
+        "nextDialogId": 12
       }
     ]
   },
@@ -146,7 +146,7 @@
         "questId": 9
       },
       {
-        "text": "Какой ты обидчивый(",
+        "text": "Так не честно, мог бы и помочь...",
         "questId": 9
       }
     ]
@@ -173,11 +173,11 @@
     "answers": [
       {
         "text": "Здравия желаю, товарищ генерал!",
-        "nextQuestionId": 14
+        "nextDialogId": 14
       },
       {
         "text": "Привет, Запп!",
-        "nextQuestionId": 15
+        "nextDialogId": 15
       }
     ]
   },
@@ -217,11 +217,11 @@
     "answers": [
       {
         "text": "Мое почтение, профессор!",
-        "nextQuestionId": 17
+        "nextDialogId": 17
       },
       {
         "text": "Привет, Амиго!",
-        "nextQuestionId": 17
+        "nextDialogId": 17
       }
     ]
   },
@@ -247,11 +247,11 @@
     "answers": [
       {
         "text": "Привет, как скажешь!",
-        "nextQuestionId": 19
+        "nextDialogId": 19
       },
       {
         "text": "Мутный ты какой-то",
-        "nextQuestionId": 20
+        "nextDialogId": 20
       }
     ]
   },
@@ -283,7 +283,7 @@
     "answers": [
       {
         "text": "Приветствую, бро!",
-        "nextQuestionId": 22
+        "nextDialogId": 22
       }
     ]
   },
@@ -309,11 +309,11 @@
     "answers": [
       {
         "text": "Спасибо, доктор. Это было непросто",
-        "nextQuestionId": 24
+        "nextDialogId": 24
       },
       {
         "text": "Спасибо, доктор. Это было просто",
-        "nextQuestionId": 25
+        "nextDialogId": 25
       }
     ]
   },
@@ -323,7 +323,7 @@
     "answers": [
       {
         "text": "Дайте, пожалуйста подсказку",
-        "nextQuestionId": 26
+        "nextDialogId": 26
       },
       {
         "text": "Я справлюсь, давайте начнём",

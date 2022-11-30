@@ -28,31 +28,31 @@
 
 <div class=" h-100 d-flex align-items-center justify-content-center">
     <div class="col-4 border p-4" id="anchor-dialog">
-        <h5>Диалог с хранителем комнаты</h5>
+        <h6>Диалог с хранителем комнаты</h6>
         <div class="row">
             <div class="col-2 how-img">
-                <img src="${pageContext.request.contextPath}${npc.getAvatar()}" class="rounded-circle" alt="Avatar"
+                <img src="${pageContext.request.contextPath}${npcInfo.getAvatar()}" class="rounded-circle" alt="Avatar"
                      width="50"
                      height="50">
             </div>
 
-            <div class="col-10"> - ${question.getText()} </div>
+            <div class="col-10"> <h5>- ${dialog.getText()} </h5></div>
         </div><br>
 
         <form action="${pageContext.request.contextPath}/dialog" method="post">
-            <c:forEach var="answer" items="${question.getAnswers()}">
+            <c:forEach var="answer" items="${dialog.getAnswers()}">
                 <div class="form-check">
                     <c:choose>
-                        <c:when test="${answer.getNextQuestionId() != null}">
+                        <c:when test="${answer.getNextDialogId() != null}">
                             <input class="form-check-input" type="radio" name="nextQuestion" id="answers"
-                                   value="${answer.getNextQuestionId()}">
+                                   value="${answer.getNextDialogId()}">
                             <label class="form-check-label" for="answers">${answer.getText()}</label>
                             <c:set var="buttonlabel" scope="page" value="Ответить"/>
 
                         </c:when>
 
                         <c:when test="${answer.getQuestId() != null}">
-                            <input class="form-check-input" type="radio" name="quest" id="answers"
+                            <input class="form-check-input" type="radio" name="questId" id="answers"
                                    value="${answer.getQuestId()}">
                             <label class="form-check-label" for="answers">${answer.getText()}</label>
                             <c:set var="buttonlabel" scope="page" value="Начать квест"/>

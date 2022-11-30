@@ -1,8 +1,11 @@
 package servlet;
 
+import com.javarush.dto.NpcDTO;
 import com.javarush.entity.*;
 import com.javarush.repository.DialogRepository;
 import com.javarush.repository.NpcRepository;
+import com.javarush.repository.Repository;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -15,8 +18,8 @@ import java.io.IOException;
 
 @WebServlet(name = "dialogServlet", value = "/dialog")
 public class DialogServlet extends HttpServlet {
-    private NpcRepository npcRepository = null;
-    private DialogRepository dialogRepository = null;
+    private Repository<Integer, Npc> npcRepository = null;
+    private Repository<Integer, Dialog> dialogRepository = null;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -28,6 +31,11 @@ public class DialogServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        /* Npc npc;
+        String npcId = request.getParameter("npc");
+       if (npcId == null) {
+            getServletContext().getRequestDispatcher("/WEB-INF/room.jsp").forward(request, response);
+        }*/
         getServletContext().getRequestDispatcher("/WEB-INF/dialog.jsp").forward(request, response);
     }
 
@@ -36,32 +44,41 @@ public class DialogServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         Npc npc;
-        String npcId = request.getParameter("npc");
+        String npcId = request.getParameter("npcId");
         if (npcId != null) {
-            npc = npcRepository.get(Integer.parseInt(npcId));
-            session.setAttribute("npc",npc);
+            npc = npcRepository.getById(Integer.parseInt(npcId));
+
+            NpcDTO npcInfo = NpcDTO.builder()
+                    .id(Integer.valueOf(npcId))
+                    .name(npc.getName())
+                    .avatar(npc.getAvatar())
+                    .description(npc.getDescription())
+                    .build();
+
+            session.setAttribute("npcInfo",npcInfo);
         }else {
-            npc = (Npc) session.getAttribute("npc");
+            NpcDTO npcDTO = (NpcDTO) session.getAttribute("npcInfo");
+            npc = npcRepository.getById(npcDTO.getId());
         }
 
-        String questId = request.getParameter("quest");
+        String questId = request.getParameter("questId");
         if (questId != null) {
             session.setAttribute("questId",questId);
             response.sendRedirect("/quest");
             return;
         }
 
-        QuestionNpc question;
+        Dialog dialog;
         String nextQuestionId = request.getParameter("nextQuestion");
 
         if (nextQuestionId != null) {
-            question = dialogRepository.get(Integer.parseInt(nextQuestionId));
+            dialog = dialogRepository.getById(Integer.parseInt(nextQuestionId));
         } else {
             int questionId = npc.getStartMessageId();
-            question = dialogRepository.get(questionId);
+            dialog = dialogRepository.getById(questionId);
         }
 
-        session.setAttribute("question", question);
+        session.setAttribute("dialog", dialog);
         response.sendRedirect("/dialog");
     }
 }

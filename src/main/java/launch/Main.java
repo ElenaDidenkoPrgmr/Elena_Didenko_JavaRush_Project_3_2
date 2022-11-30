@@ -32,7 +32,9 @@ public class Main {
 
             return root;
         } catch (URISyntaxException ex) {
-            throw new RuntimeException(ex);
+            String errorMsg = "root folder doesnt resolved: " + ex;
+            LOGGER.error(errorMsg);
+            throw new RuntimeException(errorMsg);
         }
     }
 

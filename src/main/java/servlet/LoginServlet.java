@@ -1,10 +1,9 @@
 package servlet;
 
-import com.javarush.entity.Room;
 import com.javarush.entity.User;
-import com.javarush.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import com.javarush.service.LoginService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -15,50 +14,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 
 @WebServlet(name = "loginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(LoginServlet.class);
-    private UserRepository userRepository;
+    private LoginService userService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         ServletContext servletContext = config.getServletContext();
-        userRepository = (UserRepository) servletContext.getAttribute("users");
+        userService = (LoginService) servletContext.getAttribute("loginService");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        initUser(request);
-        response.sendRedirect("/room");
-    }
-
-    private void initUser(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String userName = request.getParameter("username");
-
-        User user = new User();
-        int totalGame = User.START_TOTAL_GAME;
-
         if (userName == null) {
             User existingUser = (User) request.getSession().getAttribute("user");
-            userName = existingUser.getName() ;
-            totalGame = userRepository.get(userName).getTotalGame() + 1;
+            userName = existingUser.getName();
         }
-
-        user.setName(userName);
-        user.setTotalGame(totalGame);
-        user.setCurrentRoomId(Room.START_ROOM_ID);
-        user.setLevel(Room.START_LEVEL);
-        user.setPoint(User.START_POINT);
-        user.setEndedQuest(new ArrayList<>());
-        userRepository.add(userName, user);
-
+        User user = userService.initUser(userName);
         synchronized (session) {
             session.setAttribute("user", user);
         }
-        LOGGER.debug("User: " + userName + " starts game");
+        response.sendRedirect("/room");
     }
 }

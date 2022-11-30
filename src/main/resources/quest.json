@@ -3,10 +3,12 @@
   "text": "Это тренировочный квест. Он всегда выигрышный)",
   "answers": [
     {
+      "id": 1,
       "text": "Я уверен в победе",
       "isRight": 1
     },
     {
+      "id": 2,
       "text": "Справлюсь с игрой легко",
       "isRight": 1
     }
@@ -17,16 +19,20 @@
     "text": "Что будет в результате выполнения операции \n 2 + 2 == 5 && 12 / 4 == 3 || 5 % 3 ?",
     "answers": [
       {
+        "id": 3,
         "text": "true",
         "isRight": 1
       },
       {
+        "id": 4,
         "text": "false"
       },
       {
+        "id": 5,
         "text": "null"
       },
       {
+        "id": 6,
         "text": "0"
       }
     ]
@@ -36,13 +42,16 @@
     "text": "class Parent{\n    public static String getName(){\n        return \"Parent\";\n    }\n}\nclass Child extends Parent{\n    public static String getName(){\n        return \"Child\";\n    }\n}\npublic class StaticTest{\n    public static void main(String[] args){\n        Parent a = new Child();\n        System.out.println(a.getName());\n    }\n}",
     "answers": [
       {
+        "id": 7,
         "text": "Parent",
         "isRight": 1
       },
       {
+        "id": 8,
         "text": "Child"
       },
       {
+        "id": 9,
         "text": "Compilation error"
       }
     ]
@@ -52,9 +61,11 @@
     "text": "Что выведется в консоль?\nBigDecimal bd1 = new BigDecimal(\"0.2\");\nBigDecimal bd2 = new BigDecimal(0.2);\nSystem.out.println(bd1.equals(bd2));",
     "answers": [
       {
+        "id": 10,
         "text": "true"
       },
       {
+        "id": 11,
         "text": "false",
         "isRight": 1
       }
@@ -65,16 +76,20 @@
     "text": "Что будет, если скомпилировать и выполнить код:\n\nclass Nullable{\n    public static String hello(){\n        return \"Hello!\";\n    }\n}\n\npublic class Test{\n    public static void main(String[] args){\n        Nullable nullable = null;\n        System.out.println(nullable.hello());\n }\n}",
     "answers": [
       {
+        "id": 12,
         "text": "В консоль будет выведено \"Hello!\"",
         "isRight": 1
       },
       {
+        "id": 13,
         "text": "NullPointerException"
       },
       {
+        "id":14,
         "text": "Код выполнится без ошибок, но в консоль ничего не будет выведено"
       },
       {
+        "id": 15,
         "text": "Ошибка во время компиляции"
       }
     ]
@@ -84,19 +99,24 @@
     "text": "Каким будет результат выполнения кода?\n\n     String[] names = {\"Java\", \"Kotlin\", \"Java\"};\n        String name = \"Java\";\n        Predicate predicate = name::equals;\n        System.out.print(Stream.of(names).filter(predicate).count() + \" \");\n        name = \"Kotlin\";\n        System.out.print(Stream.of(names).filter(predicate).count());",
     "answers": [
       {
+        "id": 16,
         "text": "Не скомпилируется"
       },
       {
+        "id": 17,
         "text": "2 1"
       },
       {
+        "id": 18,
         "text": "2 + Исключение"
       },
       {
+        "id": 19,
         "text": "2 2",
         "isRight": 1
       },
       {
+        "id": 20,
         "text": "Ошибка во время компиляции"
       }
     ]
@@ -106,16 +126,20 @@
     "text": "Как потоки в java соотносятся с потоками оперционной системы",
     "answers": [
       {
+        "id": 21,
         "text": "1:1 (1 экземпляр Thread -> 1 поток ОС)",
         "isRight": 1
       },
       {
+        "id": 22,
         "text": "1:N (1 экземпляр Thread -> N потоков ОС)"
       },
       {
+        "id": 23,
         "text": "N:1 (N экземпляров Thread -> 1 поток ОС)"
       },
       {
+        "id": 24,
         "text": "N:M (N экземпляров Thread -> M потоков ОС)"
       }
     ]
@@ -125,18 +149,23 @@
     "text": "В каком списке будет ТРИ элемента после выполнения кода? \n List<Integer> integers = new ArrayList<>();\n        integers.add(1);\n        integers.add(2);\n\n        List<Integer> refList = integers;\n        List<Integer> copy = List.copyOf(integers);\n        List<Integer> collected = integers.stream().collect(Collectors.toList());\n        List<Integer> unmodifiable = Collections.unmodifiableList(integers);\n\n        integers.add(3);",
     "answers": [
       {
+        "id": 25,
         "text": "Ни в одном"
       },
       {
+        "id": 26,
         "text": "reflist + collected"
       },
       {
+        "id": 27,
         "text": "copy + unmodifiable"
       },
       {
+        "id": 28,
         "text": "Во всех"
       },
       {
+        "id": 29,
         "text": "reflist + unmodifiable",
         "isRight": 1
       }
@@ -148,18 +177,23 @@
     "text": "Какие варианты инициализации массива правильные? \n \n1) int[] array = new int[];\n2) int[] array = int[];\n3) int[] array = new int[]{1,2,3,4,5};\n4) int[] array = 1,2,3,4,5;\n5) int[] array = new int[5];\n6) int[] array = {1,2,3,4,5};",
     "answers": [
       {
+        "id": 30,
         "text": "3 и 5"
       },
       {
+        "id": 31,
         "text": "5"
       },
       {
+        "id": 32,
         "text": "1, 3, 5, 6"
       },
       {
+        "id": 33,
         "text": "Все правильные"
       },
       {
+        "id": 34,
         "text": "3, 5, 6",
         "isRight": 1
       }
@@ -171,16 +205,20 @@
     "text": "В чём разница checked и unchecked исключений? \n",
     "answers": [
       {
+        "id": 35,
         "text": "checked можно ловить  в блоке try-catch, unchecked - нельзя"
       },
       {
+        "id": 36,
         "text": "checked ожидаются JVM, поэтому затраты на поддержку меньше"
       },
       {
+        "id": 37,
         "text": "обработка checked исключений обязательна и проверяется во время компиляции",
         "isRight": 1
       },
       {
+        "id": 38,
         "text": "checked исключения показывают ошибки бизнес-логики, unchecked - плохо написанный код"
       }
     ]
@@ -190,13 +228,16 @@
     "text": "Что выведется в консоль? \n   public interface A{\n        default String get(){\n            return \"A\";\n        }\n    }\n    public interface B extends A{\n        default String get(){\n            return \"B\";\n        }\n    }\n   class Concert implements A, B {}\n\n        A a = new Concert();\n        System.out.println(a.get());}",
     "answers": [
       {
+        "id": 39,
         "text": "A"
       },
       {
+        "id": 40,
         "text": "B",
         "isRight": 1
       },
       {
+        "id": 41,
         "text": "Ошибка компиляции"
       }
     ]

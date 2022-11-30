@@ -8,14 +8,13 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
 @NoArgsConstructor
 public class AnswerToQuest implements Serializable {
-    String text;
+    private int id;
+    private String text;
     @JsonProperty
-    boolean isRight;
+    private boolean isRight;
 }
-

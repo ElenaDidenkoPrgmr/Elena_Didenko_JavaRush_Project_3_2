@@ -100,7 +100,7 @@
                             <p class="card-text">${npc.getDescription()}</p>
 
                             <form action="${pageContext.request.contextPath}/dialog" method="post">
-                                <button type="submit" name="npc" value="${npc.getId()}" class="btn btn-primary">Начать
+                                <button type="submit" name="npcId" value="${npc.getId()}" class="btn btn-primary">Начать
                                     диалог
                                 </button>
                             </form>

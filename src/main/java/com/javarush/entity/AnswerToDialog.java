@@ -7,15 +7,12 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
 @NoArgsConstructor
-public class AnswerToNpc implements Serializable {
-    String text;
-    Integer nextQuestionId;
-    Integer questId;
-
+public class AnswerToDialog implements Serializable {
+    private String text;
+    private Integer nextDialogId;
+    private Integer questId;
 }
-

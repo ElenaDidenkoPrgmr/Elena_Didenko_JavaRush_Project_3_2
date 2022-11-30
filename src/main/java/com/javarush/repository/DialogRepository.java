@@ -1,7 +1,10 @@
 package com.javarush.repository;
 
-import com.javarush.entity.Npc;
-import com.javarush.entity.QuestionNpc;
+import com.javarush.entity.Dialog;
+import java.util.Map;
 
-public class DialogRepository extends Repository<Integer, QuestionNpc>{
+public class DialogRepository extends Repository<Integer, Dialog> {
+    public DialogRepository(Map<Integer, Dialog> repository) {
+        super(repository);
+    }
 }

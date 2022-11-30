@@ -1,10 +1,12 @@
 package servlet;
 
+import com.javarush.dto.NpcDTO;
 import com.javarush.dto.RoomDTO;
 import com.javarush.entity.Npc;
 import com.javarush.entity.Room;
 import com.javarush.entity.User;
 import com.javarush.repository.NpcRepository;
+import com.javarush.repository.Repository;
 import com.javarush.repository.RoomRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,8 +24,8 @@ import java.util.List;
 @WebServlet(name = "roomServlet", value = "/room")
 public class RoomServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(RoomServlet.class);
-    private RoomRepository roomRepository = null;
-    private NpcRepository npcRepository = null;
+    private Repository<Integer, Room> roomRepository = null;
+    private Repository<Integer, Npc> npcRepository = null;
     User user = null;
 
     @Override
@@ -35,15 +37,20 @@ public class RoomServlet extends HttpServlet {
     }
 
     @Override
-    public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+    public void service(ServletRequest request, ServletResponse response)
+            throws ServletException, IOException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         user = (User) httpServletRequest.getSession().getAttribute("user");
         super.service(request, response);
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
+        if (user == null){
+            getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
+        }
 
         int currentRoomId = user.getCurrentRoomId();
         if (currentRoomId == Room.FINISH_ROOM_ID) {
@@ -52,7 +59,7 @@ public class RoomServlet extends HttpServlet {
             return;
         }
 
-        Room currentRoom = roomRepository.get(currentRoomId);
+        Room currentRoom = roomRepository.getById(currentRoomId);
         RoomDTO roomInfo = RoomDTO.builder()
                 .id(currentRoomId)
                 .name(currentRoom.getName())
@@ -61,9 +68,15 @@ public class RoomServlet extends HttpServlet {
 
         session.setAttribute("currentRoom", roomInfo);
 
-        List<Npc> npcList = new ArrayList<>();
+        List<NpcDTO> npcList = new ArrayList<>();
         for (Integer npcId : currentRoom.getNpc()) {
-            npcList.add(npcRepository.get(npcId));
+            npcList.add(NpcDTO.builder()
+                            .id(npcId)
+                            .name(npcRepository.getById(npcId).getName())
+                            .avatar(npcRepository.getById(npcId).getAvatar())
+                            .description(npcRepository.getById(npcId).getDescription())
+                    .build());
+
         }
         session.setAttribute("npcs", npcList);
         getServletContext().getRequestDispatcher("/WEB-INF/room.jsp").forward(request, response);

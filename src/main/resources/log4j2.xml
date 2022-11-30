@@ -6,10 +6,10 @@
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
             </PatternLayout>
+            <DefaultRolloverStrategy max="20"/>
             <Policies>
                 <OnStartupTriggeringPolicy />
                 <SizeBasedTriggeringPolicy size="2 MB"/>
-                <DefaultRolloverStrategy max="20"/>
             </Policies>
         </RollingFile>
 
@@ -18,10 +18,10 @@
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
             </PatternLayout>
+            <DefaultRolloverStrategy max="20"/>
             <Policies>
                 <OnStartupTriggeringPolicy />
                 <SizeBasedTriggeringPolicy size="2 MB"/>
-                <DefaultRolloverStrategy max="20"/>
             </Policies>
         </RollingFile>
 
@@ -30,10 +30,10 @@
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
             </PatternLayout>
+            <DefaultRolloverStrategy max="20"/>
             <Policies>
                 <OnStartupTriggeringPolicy />
                 <SizeBasedTriggeringPolicy size="2 MB"/>
-                <DefaultRolloverStrategy max="20"/>
             </Policies>
         </RollingFile>
 

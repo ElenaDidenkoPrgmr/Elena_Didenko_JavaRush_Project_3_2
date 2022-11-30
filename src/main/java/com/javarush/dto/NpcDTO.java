@@ -7,8 +7,9 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class RoomDTO {
-    private int id;
+public class NpcDTO {
+    private Integer id;
     private String name;
-    private int level;
+    private String avatar;
+    private String description;
 }
