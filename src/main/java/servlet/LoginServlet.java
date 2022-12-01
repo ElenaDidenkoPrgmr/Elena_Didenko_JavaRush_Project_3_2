@@ -36,9 +36,8 @@ public class LoginServlet extends HttpServlet {
             userName = existingUser.getName();
         }
         User user = userService.initUser(userName);
-        synchronized (session) {
-            session.setAttribute("user", user);
-        }
+        session.setAttribute("user", user);
+
         response.sendRedirect("/room");
     }
 }

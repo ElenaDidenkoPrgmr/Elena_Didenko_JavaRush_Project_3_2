@@ -2,6 +2,7 @@ package com.javarush.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.javarush.dto.AnswerToQuestDTO;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
+@Data
 @NoArgsConstructor
 public class Quest {
     private Integer id;

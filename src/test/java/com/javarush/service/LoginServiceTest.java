@@ -55,6 +55,6 @@ class LoginServiceTest {
         when(userRepository.getById(eq("test"))).thenReturn(testUser);
 
         testUser = loginService.initUser(testUser.getName());
-        assertEquals(testUser.getTotalGame(),3);
+        assertEquals(3,testUser.getTotalGame());
     }
 }
