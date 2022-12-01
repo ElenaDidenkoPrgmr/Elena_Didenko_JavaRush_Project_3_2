@@ -1,12 +1,18 @@
 package servlet;
 
+import com.javarush.dto.AnswerToQuestDTO;
+import com.javarush.dto.QuestDTO;
+import com.javarush.dto.RoomDTO;
+import com.javarush.entity.User;
 import com.javarush.service.LoginService;
+import com.javarush.service.QuestService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,9 +20,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class QuestServletTest {
@@ -37,30 +47,121 @@ class QuestServletTest {
     ServletContext context;
 
     @Mock
-    LoginService userService;
+    QuestService questService;
+    @Mock
+    RequestDispatcher requestDispatcher;
 
-    LoginServlet loginServlet;
+    QuestServlet questServlet;
 
     @BeforeEach
     void setup() throws ServletException {
         when(servletConfig.getServletContext())
                 .thenReturn(context);
 
-        when(context.getAttribute(eq("loginService")))
-                .thenReturn(userService);
+        when(context.getAttribute(eq("questsService")))
+                .thenReturn(questService);
 
         when(request.getSession())
                 .thenReturn(session);
 
-        loginServlet = new LoginServlet();
-        loginServlet.init(servletConfig);
+        questServlet = new QuestServlet();
+        questServlet.init(servletConfig);
     }
 
     @Test
-    void doGet() {
+    void test_doGet_WhenQuestIdNotNull() throws ServletException, IOException {
+        QuestDTO questDTO =QuestDTO.builder()
+                .text("Some quest")
+                .answers(List.of(AnswerToQuestDTO.builder()
+                                .id(1)
+                                .text("answer1")
+                        .build(),
+                        AnswerToQuestDTO.builder()
+                                .id(2)
+                                .text("answer2")
+                                .build()))
+                .build();
+        when(session.getAttribute("questId")).thenReturn("1");
+        when(questService.getQuestDTO("1")).thenReturn(questDTO);
+        when(context.getRequestDispatcher(eq("/WEB-INF/quest.jsp")))
+                .thenReturn(requestDispatcher);
+        questServlet.doGet(request,response);
+        verify(session,times(1)).setAttribute("questInfo",questDTO);
+        verify(requestDispatcher, times(1))
+                .forward(request, response);
     }
 
     @Test
-    void doPost() {
+    void test_doGet_WhenQuestIdNull() throws ServletException, IOException {
+        QuestDTO questDTO =QuestDTO.builder()
+                .text("Some quest")
+                .answers(List.of(AnswerToQuestDTO.builder()
+                                .id(1)
+                                .text("answer1")
+                                .build(),
+                        AnswerToQuestDTO.builder()
+                                .id(2)
+                                .text("answer2")
+                                .build()))
+                .build();
+        when(session.getAttribute("questId")).thenReturn(null);
+        when(context.getRequestDispatcher(eq("/WEB-INF/quest.jsp")))
+                .thenReturn(requestDispatcher);
+        questServlet.doGet(request,response);
+        verify(session,times(0)).setAttribute("questInfo",questDTO);
+        verify(requestDispatcher, times(1))
+                .forward(request, response);
+    }
+
+    @Test
+    void test_doPost_WhenQuestIsSuccess() throws ServletException, IOException {
+        User testUser = new User();
+        RoomDTO roomDTO = RoomDTO.builder()
+                .id(1)
+                .level(2)
+                .name("testRoom")
+                .build();
+
+        when(session.getAttribute("user")).thenReturn(testUser);
+        when(session.getAttribute("questId")).thenReturn("3");
+        when(request.getParameter("questAnswerId")).thenReturn("4");
+        when(session.getAttribute("currentRoom")).thenReturn(roomDTO);
+        when(questService.questIsSuccess("3", "4")).thenReturn(true);
+        when(context.getRequestDispatcher(eq("/WEB-INF/questOver.jsp")))
+                .thenReturn(requestDispatcher);
+
+        questServlet.doPost(request,response);
+
+        verify(questService,times(1)).setUserLevelAndPoints(testUser, roomDTO);
+        verify(session,times(1)).setAttribute("resultQuest", true);
+        verify(questService,times(1)).closeRoom(testUser, roomDTO);
+        verify(requestDispatcher, times(1))
+                .forward(request, response);
+    }
+
+    @Test
+    void test_doPost_WhenQuestIsWrong() throws ServletException, IOException {
+        User testUser = new User();
+        RoomDTO roomDTO = RoomDTO.builder()
+                .id(1)
+                .level(2)
+                .name("testRoom")
+                .build();
+
+        when(session.getAttribute("user")).thenReturn(testUser);
+        when(session.getAttribute("questId")).thenReturn("3");
+        when(request.getParameter("questAnswerId")).thenReturn("4");
+        when(session.getAttribute("currentRoom")).thenReturn(roomDTO);
+        when(questService.questIsSuccess("3", "4")).thenReturn(false);
+        when(context.getRequestDispatcher(eq("/WEB-INF/questOver.jsp")))
+                .thenReturn(requestDispatcher);
+
+        questServlet.doPost(request,response);
+
+        verify(questService,times(0)).setUserLevelAndPoints(testUser,roomDTO);
+        verify(session,times(1)).setAttribute("resultQuest", false);
+        verify(questService,times(1)).closeRoom(testUser, roomDTO);
+        verify(requestDispatcher, times(1))
+                .forward(request, response);
     }
 }

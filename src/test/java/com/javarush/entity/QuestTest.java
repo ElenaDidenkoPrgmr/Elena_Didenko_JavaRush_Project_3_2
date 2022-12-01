@@ -51,7 +51,6 @@ public class QuestTest {
                 .text("Three")
                 .build();
 
-        List<AnswerToQuest> testList = Arrays.asList(answer1,answer2,answer3);
         List<AnswerToQuestDTO> expectedListDTO = Arrays.asList(answerToQuestDTO1,answerToQuestDTO2,answerToQuestDTO3);
 
         List<AnswerToQuestDTO> actualListDTO = testQuest.getAnswerDTO();

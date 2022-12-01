@@ -31,11 +31,6 @@ public class DialogServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /* Npc npc;
-        String npcId = request.getParameter("npc");
-       if (npcId == null) {
-            getServletContext().getRequestDispatcher("/WEB-INF/room.jsp").forward(request, response);
-        }*/
         getServletContext().getRequestDispatcher("/WEB-INF/dialog.jsp").forward(request, response);
     }
 
