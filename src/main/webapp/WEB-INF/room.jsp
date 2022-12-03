@@ -1,6 +1,6 @@
-<%@ page import="com.javarush.repository.RoomRepository" %>
+<%@ page import="com.javarush.eldidenko.repository.RoomRepository" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="com.javarush.entity.Room" %>
+<%@ page import="com.javarush.eldidenko.entity.Room" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/function-contains.tld" prefix="fn" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
