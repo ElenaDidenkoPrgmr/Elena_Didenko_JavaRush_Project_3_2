@@ -43,7 +43,7 @@ public class AppContextListener implements ServletContextListener {
         initializationUsers(servletContext);
     }
 
-    private String readFile(String fileName) {
+    private String getFileContents(String fileName) {
         String contents;
         InputStream inputStream = getClass().getResourceAsStream(fileName);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
@@ -54,7 +54,7 @@ public class AppContextListener implements ServletContextListener {
 
     private void initializationRooms(ServletContext servletContext) {
         ObjectMapper mapper = new JsonMapper();
-        String contents = readFile("/rooms.json");
+        String contents = getFileContents("/rooms.json");
         Room[] roomsArray;
 
         try {
@@ -74,7 +74,7 @@ public class AppContextListener implements ServletContextListener {
 
     private void initializationNpcs(ServletContext servletContext) {
         ObjectMapper mapper = new JsonMapper();
-        String contents = readFile("/npcs.json");
+        String contents = getFileContents("/npcs.json");
         Npc[] npcsArray;
 
         try {
@@ -94,7 +94,7 @@ public class AppContextListener implements ServletContextListener {
 
     private void initializationDialogs(ServletContext servletContext) {
         ObjectMapper mapper = new JsonMapper();
-        String contents = readFile("/dialogs.json");
+        String contents = getFileContents("/dialogs.json");
         Dialog[] dialogsArray;
 
         try {
@@ -114,7 +114,7 @@ public class AppContextListener implements ServletContextListener {
 
     private void initializationQuests(ServletContext servletContext) {
         ObjectMapper mapper = new JsonMapper();
-        String contents = readFile("/quests.json");
+        String contents = getFileContents("/quests.json");
         Quest[] questArray;
         try {questArray = mapper.readValue(contents, Quest[].class);
         } catch (IOException e) {
