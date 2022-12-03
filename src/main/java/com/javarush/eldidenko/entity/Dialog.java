@@ -17,5 +17,5 @@ import java.util.List;
 public class Dialog implements Serializable {
     private int id;
     private String text;
-    List<AnswerToDialog> answers;
+    private List<AnswerToDialog> answers;
 }

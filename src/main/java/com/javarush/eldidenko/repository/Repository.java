@@ -9,7 +9,7 @@ import java.util.Map;
 public class Repository<K, T> {
     private static final Logger LOGGER = LogManager.getLogger(Repository.class);
 
-    public Map<K, T> repository;
+    protected Map<K, T> repository;
 
     public Repository(Map<K, T> repository) {
         this.repository = repository;

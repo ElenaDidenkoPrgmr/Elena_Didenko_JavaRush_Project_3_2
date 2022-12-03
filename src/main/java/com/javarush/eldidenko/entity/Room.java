@@ -27,5 +27,4 @@ public class Room implements Serializable {
     private String name;
     private int level;
     private List<Integer> npc = new ArrayList<>();
-
 }

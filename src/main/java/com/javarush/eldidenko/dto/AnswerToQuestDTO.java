@@ -9,5 +9,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class AnswerToQuestDTO {
     private int id;
-    String text;
+    private String text;
 }

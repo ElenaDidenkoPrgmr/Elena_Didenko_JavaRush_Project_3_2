@@ -26,7 +26,7 @@ public class RoomServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(RoomServlet.class);
     private Repository<Integer, Room> roomRepository = null;
     private Repository<Integer, Npc> npcRepository = null;
-    User user = null;
+    private User user = null;
 
     @Override
     public void init(ServletConfig config) throws ServletException {

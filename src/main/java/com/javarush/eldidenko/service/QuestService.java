@@ -14,7 +14,7 @@ import java.util.List;
 
 public class QuestService extends Service<Integer, Quest> {
     private static final Logger LOGGER = LogManager.getLogger(QuestService.class);
-    private static final int coefficientPoint = 10;
+    private static final int COEFFICIENT_POINT = 10;
 
     public QuestService(Repository<Integer, Quest> repository) {
         super(repository);
@@ -51,7 +51,7 @@ public class QuestService extends Service<Integer, Quest> {
 
         if (currentUserLevel == currentRoomLevel) {
             user.setLevel(currentRoomLevel + 1);
-            user.setPoint(currentPoint + currentRoomLevel * coefficientPoint);
+            user.setPoint(currentPoint + currentRoomLevel * COEFFICIENT_POINT);
         }
     }
 
