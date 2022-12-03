@@ -1,23 +1,23 @@
 package com.javarush.eldidenko.servlet;
 
 public enum WebConstants {
+    LOGIN_SERVICE ("loginService"),
+    QUEST_SERVICE ("questsService"),
+    ROOMS_REPOSITORY("rooms"),
+    DIALOG_REPOSITORY ("dialogs"),
+    NPC_REPOSITORY ("npcs"),
     USERNAME("username"),
     USER("user"),
     QUEST_ID ("questId"),
-    NEXT_QUESTION ("nextQuestion"),
+    QUEST_INFO ("questInfo"),
     QUEST_ANSWER_ID ("questAnswerId"),
+    RESULT_QUEST ("resultQuest"),
     NPC_INFO ("npcInfo"),
     NPC_ID ("npcId"),
     DIALOG ("dialog"),
-    ROOMS_REPOSITORY("rooms"),
+    NEXT_QUESTION ("nextQuestion"),
     CURRENT_ROOM ("currentRoom"),
-    NEXT_ROOM ("nextRoom"),
-    RESULT_QUEST ("resultQuest"),
-    LOGIN_SERVICE ("loginService"),
-    QUEST_INFO ("questInfo"),
-    QUEST_SERVICE ("questsService"),
-    DIALOG_REPOSITORY ("dialogs"),
-    NPC_REPOSITORY ("npcs");
+    NEXT_ROOM ("nextRoom");
     //DIALOG_PAGE ("/dialog");
 
     private final String text;
