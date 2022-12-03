@@ -118,7 +118,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.javarush.eldidenko.launch.Main</mainClass>
+                            <mainClass>com.javarush.eldidenko.servlet_quest.launch.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -149,7 +149,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.javarush.eldidenko.launch.Main</mainClass>
+                            <mainClass>com.javarush.eldidenko.servlet_quest.launch.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

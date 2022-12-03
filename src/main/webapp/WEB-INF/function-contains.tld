@@ -11,7 +11,7 @@
     <tlib-version>1.0</tlib-version>
     <function>
         <name>contains</name>
-        <function-class>com.javarush.eldidenko.jsp.CheckContainsValue</function-class>
+        <function-class>com.javarush.eldidenko.servlet_quest.jsp.CheckContainsValue</function-class>
         <function-signature>boolean contains(java.util.List,java.lang.Object)
         </function-signature>
     </function>

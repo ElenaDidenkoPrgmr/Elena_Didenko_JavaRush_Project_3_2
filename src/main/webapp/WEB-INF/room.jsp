@@ -1,11 +1,11 @@
-<%@ page import="com.javarush.eldidenko.repository.RoomRepository" %>
+<%@ page import="com.javarush.eldidenko.servlet_quest.repository.RoomRepository" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="com.javarush.eldidenko.entity.Room" %>
+<%@ page import="com.javarush.eldidenko.servlet_quest.entity.Room" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/function-contains.tld" prefix="fn" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.javarush.eldidenko.servlet.WebConstants" %>
-<%@ page import="com.javarush.eldidenko.servlet.WebConstants" %>
+<%@ page import="com.javarush.eldidenko.servlet_quest.servlet.WebConstants" %>
+<%@ page import="com.javarush.eldidenko.servlet_quest.servlet.WebConstants" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>

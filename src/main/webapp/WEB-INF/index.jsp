@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.javarush.eldidenko.servlet.WebConstants" %>
+<%@ page import="com.javarush.eldidenko.servlet_quest.servlet.WebConstants" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>

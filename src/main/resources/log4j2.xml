@@ -42,12 +42,12 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="com.javarush.eldidenko.launch.Main" level="debug" additivity="false">
+        <Logger name="com.javarush.eldidenko.servlet_quest.launch.Main" level="debug" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingFileTomcat"/>
         </Logger>
 
-        <Logger name="com.javarush.eldidenko.AppContextListener" level="debug" additivity="false">
+        <Logger name="com.javarush.eldidenko.servlet_quest.AppContextListener" level="debug" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingFileAppContextListener"/>
         </Logger>
