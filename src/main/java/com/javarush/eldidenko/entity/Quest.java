@@ -30,13 +30,10 @@ public class Quest {
     }
 
     public boolean isRightAnswer(int idAnswer) {
-        boolean result = false;
-        for (AnswerToQuest answer : answers) {
-            if (answer.getId() == idAnswer) {
-                result = answer.isRight();
-                break;
-            }
-        }
-        return result;
+        return answers.stream()
+                .filter(x -> x.getId() == idAnswer)
+                .findFirst()
+                .get()
+                .isRight();
     }
 }

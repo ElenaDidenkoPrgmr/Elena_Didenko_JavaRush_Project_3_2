@@ -67,7 +67,7 @@ public class AppContextListener implements ServletContextListener {
         Map<Integer, Room> initialMapRoom = Arrays.stream(roomsArray)
                 .collect(Collectors.toMap(Room::getId, Function.identity()));
 
-        RoomRepository roomRepository = new RoomRepository(Collections.unmodifiableMap(initialMapRoom));
+        RoomRepository roomRepository = new RoomRepository(Map.copyOf(initialMapRoom));
         servletContext.setAttribute("rooms", roomRepository);
         LOGGER.debug("RoomRepository initialization success");
     }
@@ -87,7 +87,7 @@ public class AppContextListener implements ServletContextListener {
         Map<Integer, Npc> initialMapNpc = Arrays.stream(npcsArray)
                 .collect(Collectors.toMap(Npc::getId, Function.identity()));
 
-        NpcRepository npcRepository = new NpcRepository(Collections.unmodifiableMap(initialMapNpc));
+        NpcRepository npcRepository = new NpcRepository(Map.copyOf(initialMapNpc));
         servletContext.setAttribute("npcs", npcRepository);
         LOGGER.debug("NpcRepository initialization success");
     }
@@ -107,7 +107,7 @@ public class AppContextListener implements ServletContextListener {
         Map<Integer, Dialog> initialMapDialog = Arrays.stream(dialogsArray)
                 .collect(Collectors.toMap(Dialog::getId, Function.identity()));
 
-        DialogRepository dialogRepository = new DialogRepository(Collections.unmodifiableMap(initialMapDialog));
+        DialogRepository dialogRepository = new DialogRepository(Map.copyOf(initialMapDialog));
         servletContext.setAttribute("dialogs", dialogRepository);
         LOGGER.debug("DialogRepository initialization success");
     }
@@ -125,7 +125,7 @@ public class AppContextListener implements ServletContextListener {
         Map<Integer, Quest> initialMapQuest = Arrays.stream(questArray)
                 .collect(Collectors.toMap(Quest::getId, Function.identity()));
 
-        QuestRepository questRepository = new QuestRepository(Collections.unmodifiableMap(initialMapQuest));
+        QuestRepository questRepository = new QuestRepository(Map.copyOf(initialMapQuest));
         servletContext.setAttribute("questsService", new QuestService(questRepository));
         LOGGER.debug("QuestRepository initialization success");
     }
