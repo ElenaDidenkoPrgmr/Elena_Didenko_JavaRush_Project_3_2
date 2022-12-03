@@ -1,5 +1,6 @@
 package com.javarush.eldidenko;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.javarush.eldidenko.entity.Npc;
@@ -35,94 +36,101 @@ public class AppContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
 
-        InitializationRooms(servletContext);
-        InitializationNpcs(servletContext);
-        InitializationDialogs(servletContext);
-        InitializationQuests(servletContext);
-        InitializationUsers(servletContext);
+        initializationRooms(servletContext);
+        initializationNpcs(servletContext);
+        initializationDialogs(servletContext);
+        initializationQuests(servletContext);
+        initializationUsers(servletContext);
     }
 
-    private void InitializationRooms(ServletContext servletContext) {
+    private String readFile(String fileName) {
+        String contents;
+        InputStream inputStream = getClass().getResourceAsStream(fileName);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        contents = reader.lines()
+                .collect(Collectors.joining(System.lineSeparator()));
+        return contents;
+    }
+
+    private void initializationRooms(ServletContext servletContext) {
         ObjectMapper mapper = new JsonMapper();
-        Map<Integer, Room> initialMapRoom;
-        try (InputStream inputStream = getClass().getResourceAsStream("/rooms.json");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            String contents = reader.lines()
-                    .collect(Collectors.joining(System.lineSeparator()));
-            Room[] roomsArray = mapper.readValue(contents, Room[].class);
-            initialMapRoom = Arrays.stream(roomsArray)
-                    .collect(Collectors.toMap(Room::getId, Function.identity()));
-        } catch (IOException e) {
-            String error = "Error during initialization RoomRepository" + e;
+        String contents = readFile("/rooms.json");
+        Room[] roomsArray;
+
+        try {
+            roomsArray = mapper.readValue(contents, Room[].class);
+        } catch (JsonProcessingException e) {
+            String error = "Error during initialization RoomsRepository" + e;
             LOGGER.error(error);
             throw new RuntimeException(error);
         }
+        Map<Integer, Room> initialMapRoom = Arrays.stream(roomsArray)
+                .collect(Collectors.toMap(Room::getId, Function.identity()));
+
         RoomRepository roomRepository = new RoomRepository(Collections.unmodifiableMap(initialMapRoom));
         servletContext.setAttribute("rooms", roomRepository);
         LOGGER.debug("RoomRepository initialization success");
     }
 
-    private void InitializationNpcs(ServletContext servletContext) {
-        ObjectMapper mapper2 = new JsonMapper();
-        Map<Integer, Npc> initialMapNpc;
-        try (InputStream inputStream = getClass().getResourceAsStream("/npc.json");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            String contents = reader.lines()
-                    .collect(Collectors.joining(System.lineSeparator()));
-            Npc[] npcArray = mapper2.readValue(contents, Npc[].class);
-            initialMapNpc = Arrays.stream(npcArray)
-                    .collect(Collectors.toMap(Npc::getId, Function.identity()));
+    private void initializationNpcs(ServletContext servletContext) {
+        ObjectMapper mapper = new JsonMapper();
+        String contents = readFile("/npcs.json");
+        Npc[] npcsArray;
+
+        try {
+            npcsArray = mapper.readValue(contents, Npc[].class);
         } catch (IOException e) {
             String error = "Error during initialization NpcRepository" + e;
             LOGGER.error(error);
             throw new RuntimeException(error);
         }
+        Map<Integer, Npc> initialMapNpc = Arrays.stream(npcsArray)
+                .collect(Collectors.toMap(Npc::getId, Function.identity()));
+
         NpcRepository npcRepository = new NpcRepository(Collections.unmodifiableMap(initialMapNpc));
         servletContext.setAttribute("npcs", npcRepository);
         LOGGER.debug("NpcRepository initialization success");
     }
 
-    private void InitializationDialogs(ServletContext servletContext) {
-        ObjectMapper mapper3 = new JsonMapper();
-        Map<Integer, Dialog> initialMapDialog;
-        try (InputStream inputStream = getClass().getResourceAsStream("/dialog.json");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            String contents = reader.lines()
-                    .collect(Collectors.joining(System.lineSeparator()));
-            Dialog[] questionArray = mapper3.readValue(contents, Dialog[].class);
-            initialMapDialog = Arrays.stream(questionArray)
-                    .collect(Collectors.toMap(Dialog::getId, Function.identity()));
+    private void initializationDialogs(ServletContext servletContext) {
+        ObjectMapper mapper = new JsonMapper();
+        String contents = readFile("/dialogs.json");
+        Dialog[] dialogsArray;
+
+        try {
+            dialogsArray = mapper.readValue(contents, Dialog[].class);
         } catch (IOException e) {
             String error = "Error during initialization DialogRepository" + e;
             LOGGER.error(error);
             throw new RuntimeException(error);
         }
+        Map<Integer, Dialog> initialMapDialog = Arrays.stream(dialogsArray)
+                .collect(Collectors.toMap(Dialog::getId, Function.identity()));
+
         DialogRepository dialogRepository = new DialogRepository(Collections.unmodifiableMap(initialMapDialog));
         servletContext.setAttribute("dialogs", dialogRepository);
         LOGGER.debug("DialogRepository initialization success");
     }
 
-    private void InitializationQuests(ServletContext servletContext) {
-        ObjectMapper mapper4 = new JsonMapper();
-        Map<Integer, Quest> initialMapQuest;
-        try (InputStream inputStream = getClass().getResourceAsStream("/quest.json");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            String contents = reader.lines()
-                    .collect(Collectors.joining(System.lineSeparator()));
-            Quest[] questArray = mapper4.readValue(contents, Quest[].class);
-            initialMapQuest = Arrays.stream(questArray)
-                    .collect(Collectors.toMap(Quest::getId, Function.identity()));
+    private void initializationQuests(ServletContext servletContext) {
+        ObjectMapper mapper = new JsonMapper();
+        String contents = readFile("/quests.json");
+        Quest[] questArray;
+        try {questArray = mapper.readValue(contents, Quest[].class);
         } catch (IOException e) {
             String error = "Error during initialization QuestRepository" + e;
             LOGGER.error(error);
             throw new RuntimeException(error);
         }
+        Map<Integer, Quest> initialMapQuest = Arrays.stream(questArray)
+                .collect(Collectors.toMap(Quest::getId, Function.identity()));
+
         QuestRepository questRepository = new QuestRepository(Collections.unmodifiableMap(initialMapQuest));
         servletContext.setAttribute("questsService", new QuestService(questRepository));
         LOGGER.debug("QuestRepository initialization success");
     }
 
-    private static void InitializationUsers(ServletContext servletContext) {
+    private static void initializationUsers(ServletContext servletContext) {
         UserRepository userRepository = new UserRepository(new HashMap<>());
         servletContext.setAttribute("loginService", new LoginService(userRepository));
         LOGGER.debug("UserRepository created");
