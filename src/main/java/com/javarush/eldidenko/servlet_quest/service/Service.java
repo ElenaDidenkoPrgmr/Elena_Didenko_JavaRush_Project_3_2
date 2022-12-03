@@ -16,7 +16,7 @@ public class Service<K, T> {
         try {
             result = Integer.parseInt(stringValue);
         } catch (RuntimeException exception) {
-            String errorMsg = stringName + " is not integer " + exception;
+            var errorMsg = stringName + " is not integer " + exception;
             logger.error(errorMsg);
             throw new ServiceException(errorMsg);
         }

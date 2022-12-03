@@ -18,23 +18,23 @@ public class LoginService extends Service<String, User> {
 
     public User initUser(String userName) {
         if (userName == null) {
-            String errorMsg = "userName can't be null";
+            var errorMsg = "userName can't be null";
             LOGGER.error(errorMsg);
             throw new ServiceException(errorMsg);
         }
 
-        User user = new User();
-        int totalGame = User.START_TOTAL_GAME;
+        var totalGame = User.START_TOTAL_GAME;
         if (repository.containsId(userName)) {
             totalGame = repository.getById(userName).getTotalGame() + 1;
         }
-
-        user.setName(userName);
-        user.setTotalGame(totalGame);
-        user.setCurrentRoomId(Room.START_ROOM_ID);
-        user.setLevel(Room.START_LEVEL);
-        user.setPoint(User.START_POINT);
-        user.setEndedQuest(new ArrayList<>());
+        var user = User.builder()
+                .name(userName)
+                .totalGame(totalGame)
+                .currentRoomId(Room.START_ROOM_ID)
+                .level(Room.START_LEVEL)
+                .point(User.START_POINT)
+                .endedQuest(new ArrayList<>())
+                .build();
 
         repository.add(userName, user);
         LOGGER.debug("User: " + userName + " starts game");

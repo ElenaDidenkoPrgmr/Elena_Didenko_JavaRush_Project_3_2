@@ -33,7 +33,7 @@ public class RoomServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        ServletContext servletContext = config.getServletContext();
+        var servletContext = config.getServletContext();
         roomRepository = (RoomRepository) servletContext.getAttribute(WebConstants.ROOMS_REPOSITORY.toString());
         npcRepository = (NpcRepository) servletContext.getAttribute(WebConstants.NPC_REPOSITORY.toString());
     }
@@ -41,7 +41,7 @@ public class RoomServlet extends HttpServlet {
     @Override
     public void service(ServletRequest request, ServletResponse response)
             throws ServletException, IOException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        var httpServletRequest = (HttpServletRequest) request;
         user = (User) httpServletRequest.getSession().getAttribute(WebConstants.USER.toString());
         super.service(request, response);
     }
@@ -49,20 +49,20 @@ public class RoomServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        var session = request.getSession();
         if (user == null){
             getServletContext().getRequestDispatcher(WebConstants.INDEX_JSP.toString()).forward(request, response);
         }
 
-        int currentRoomId = user.getCurrentRoomId();
+        var currentRoomId = user.getCurrentRoomId();
         if (currentRoomId == Room.FINISH_ROOM_ID) {
             getServletContext().getRequestDispatcher(WebConstants.GAME_OVER_JSP.toString()).forward(request, response);
             LOGGER.debug(USER_GAME_OVER_STARTING + user.getName() + USER_GAME_OVER_ENDING);
             return;
         }
 
-        Room currentRoom = roomRepository.getById(currentRoomId);
-        RoomDTO roomInfo = RoomDTO.builder()
+        var currentRoom = roomRepository.getById(currentRoomId);
+        var roomInfo = RoomDTO.builder()
                 .id(currentRoomId)
                 .name(currentRoom.getName())
                 .level(currentRoom.getLevel())
@@ -71,7 +71,7 @@ public class RoomServlet extends HttpServlet {
         session.setAttribute(WebConstants.CURRENT_ROOM.toString(), roomInfo);
 
         List<NpcDTO> npcList = new ArrayList<>();
-        for (Integer npcId : currentRoom.getNpc()) {
+        for (var npcId : currentRoom.getNpc()) {
             npcList.add(NpcDTO.builder()
                             .id(npcId)
                             .name(npcRepository.getById(npcId).getName())
@@ -86,7 +86,7 @@ public class RoomServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Integer nextRoom = Integer.valueOf(request.getParameter(WebConstants.NEXT_ROOM.toString()));
+        var nextRoom = Integer.valueOf(request.getParameter(WebConstants.NEXT_ROOM.toString()));
         if (nextRoom != null) {
             user.setCurrentRoomId(nextRoom);
         }

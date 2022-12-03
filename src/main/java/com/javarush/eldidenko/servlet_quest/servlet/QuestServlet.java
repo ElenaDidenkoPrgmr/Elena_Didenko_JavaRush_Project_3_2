@@ -23,16 +23,16 @@ public class QuestServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        ServletContext servletContext = config.getServletContext();
+        var servletContext = config.getServletContext();
         questService = (QuestService) servletContext.getAttribute(WebConstants.QUEST_SERVICE.toString());
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String questId = (String) session.getAttribute(WebConstants.QUEST_ID.toString());
+        var session = request.getSession();
+        var questId = (String) session.getAttribute(WebConstants.QUEST_ID.toString());
         if (questId != null) {
-            QuestDTO questInfo = questService.getQuestDTO(questId);
+            var questInfo = questService.getQuestDTO(questId);
             session.setAttribute(WebConstants.QUEST_INFO.toString(), questInfo);
         }
         getServletContext().getRequestDispatcher(WebConstants.QUEST_JSP.toString()).forward(request, response);
@@ -40,11 +40,11 @@ public class QuestServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(WebConstants.USER.toString());
-        String questId = (String) session.getAttribute(WebConstants.QUEST_ID.toString());
-        String questAnswerId = request.getParameter(WebConstants.QUEST_ANSWER_ID.toString());
-        RoomDTO endedRoom = (RoomDTO) session.getAttribute(WebConstants.CURRENT_ROOM.toString());
+        var session = request.getSession();
+        var user = (User) session.getAttribute(WebConstants.USER.toString());
+        var questId = (String) session.getAttribute(WebConstants.QUEST_ID.toString());
+        var questAnswerId = request.getParameter(WebConstants.QUEST_ANSWER_ID.toString());
+        var endedRoom = (RoomDTO) session.getAttribute(WebConstants.CURRENT_ROOM.toString());
 
         if (questService.questIsSuccess(questId, questAnswerId)) {
             questService.setUserLevelAndPoints(user, endedRoom);

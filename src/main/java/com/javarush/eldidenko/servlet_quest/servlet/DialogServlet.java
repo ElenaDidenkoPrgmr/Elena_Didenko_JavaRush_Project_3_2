@@ -26,7 +26,7 @@ public class DialogServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        ServletContext servletContext = config.getServletContext();
+        var servletContext = config.getServletContext();
         npcRepository = (NpcRepository) servletContext.getAttribute(WebConstants.NPC_REPOSITORY.toString());
         dialogRepository = (DialogRepository) servletContext.getAttribute(WebConstants.DIALOG_REPOSITORY.toString());
     }
@@ -38,14 +38,14 @@ public class DialogServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
+        var session = request.getSession();
 
         Npc npc;
-        String npcId = request.getParameter(WebConstants.NPC_ID.toString());
+        var npcId = request.getParameter(WebConstants.NPC_ID.toString());
         if (npcId != null) {
             npc = npcRepository.getById(Integer.parseInt(npcId));
 
-            NpcDTO npcInfo = NpcDTO.builder()
+            var npcInfo = NpcDTO.builder()
                     .id(Integer.valueOf(npcId))
                     .name(npc.getName())
                     .avatar(npc.getAvatar())
@@ -53,12 +53,12 @@ public class DialogServlet extends HttpServlet {
                     .build();
 
             session.setAttribute(WebConstants.NPC_INFO.toString(), npcInfo);
-        }else {
-            NpcDTO npcDTO = (NpcDTO) session.getAttribute(WebConstants.NPC_INFO.toString());
+        } else {
+            var npcDTO = (NpcDTO) session.getAttribute(WebConstants.NPC_INFO.toString());
             npc = npcRepository.getById(npcDTO.getId());
         }
 
-        String questId = request.getParameter(WebConstants.QUEST_ID.toString());
+        var questId = request.getParameter(WebConstants.QUEST_ID.toString());
         if (questId != null) {
             session.setAttribute(WebConstants.QUEST_ID.toString(), questId);
             response.sendRedirect(WebConstants.QUEST_PAGE.toString());
@@ -66,7 +66,7 @@ public class DialogServlet extends HttpServlet {
         }
 
         Dialog dialog;
-        String nextQuestionId = request.getParameter(WebConstants.NEXT_QUESTION.toString());
+        var nextQuestionId = request.getParameter(WebConstants.NEXT_QUESTION.toString());
 
         if (nextQuestionId != null) {
             dialog = dialogRepository.getById(Integer.parseInt(nextQuestionId));

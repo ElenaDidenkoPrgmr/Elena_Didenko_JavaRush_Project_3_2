@@ -1,10 +1,16 @@
 package com.javarush.eldidenko.servlet_quest.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     public static final int START_TOTAL_GAME = 0;
     public static final int START_POINT = 0;

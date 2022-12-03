@@ -25,19 +25,19 @@ public class LoginServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        ServletContext servletContext = config.getServletContext();
+        var servletContext = config.getServletContext();
         userService = (LoginService) servletContext.getAttribute(LOGIN_SERVICE.toString());
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
-        String userName = request.getParameter(USERNAME.toString());
+        var session = request.getSession();
+        var userName = request.getParameter(USERNAME.toString());
         if (userName == null) {
-            User existingUser = (User) request.getSession().getAttribute(USER.toString());
+            var existingUser = (User) request.getSession().getAttribute(USER.toString());
             userName = existingUser.getName();
         }
-        User user = userService.initUser(userName);
+        var user = userService.initUser(userName);
         session.setAttribute(USER.toString(), user);
 
         response.sendRedirect(ROOM_PAGE.toString());

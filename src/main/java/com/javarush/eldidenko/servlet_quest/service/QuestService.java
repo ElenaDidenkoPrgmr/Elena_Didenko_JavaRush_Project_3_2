@@ -1,6 +1,5 @@
 package com.javarush.eldidenko.servlet_quest.service;
 
-import com.javarush.eldidenko.servlet_quest.dto.AnswerToQuestDTO;
 import com.javarush.eldidenko.servlet_quest.dto.QuestDTO;
 import com.javarush.eldidenko.servlet_quest.dto.RoomDTO;
 import com.javarush.eldidenko.servlet_quest.entity.Quest;
@@ -12,11 +11,14 @@ import com.javarush.eldidenko.servlet_quest.servlet.WebConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
-
 public class QuestService extends Service<Integer, Quest> {
     private static final Logger LOGGER = LogManager.getLogger(QuestService.class);
     private static final int COEFFICIENT_POINT = 10;
+    private static final String MESSAGE_NULL_ERROR = " can't be null";
+    private static final String ADD_INFO_QUEST_ID_TO_LOGGER = "questIdValue";
+    private static final String ADD_INFO_ANSWER_TO_LOGGER = "answer";
+    private static final String ADD_INFO_ROOM_DTO_TO_LOGGER = "endedRoomDTO";
+    private static final String ADD_INFO_ROOM_TO_LOGGER = "endedRoom";
 
     public QuestService(Repository<Integer, Quest> repository) {
         super(repository);
@@ -24,7 +26,7 @@ public class QuestService extends Service<Integer, Quest> {
 
     private void checkParameterNotNull(Object parameter, String parameterName) {
         if (parameter == null) {
-            String errorMsg = parameterName + " can't be null";
+            var errorMsg = parameterName + MESSAGE_NULL_ERROR;
             LOGGER.error(errorMsg);
             throw new ServiceException(errorMsg);
         }
@@ -32,10 +34,10 @@ public class QuestService extends Service<Integer, Quest> {
 
     public QuestDTO getQuestDTO(String questIdValue) {
         checkParameterNotNull(questIdValue, WebConstants.QUEST_ID.toString());
-        Integer questId = parsingStringToInt(questIdValue, "questIdValue", LOGGER);
+        var questId = parsingStringToInt(questIdValue, ADD_INFO_QUEST_ID_TO_LOGGER, LOGGER);
 
-        Quest quest = repository.getById(questId);
-        List<AnswerToQuestDTO> answerInfo = quest.getAnswerDTO();
+        var quest = repository.getById(questId);
+        var answerInfo = quest.getAnswerDTO();
         return QuestDTO.builder()
                 .text(quest.getText())
                 .answers(answerInfo)
@@ -44,12 +46,12 @@ public class QuestService extends Service<Integer, Quest> {
 
     public void setUserLevelAndPoints(User user, RoomDTO endedRoomDTO) {
         checkParameterNotNull(user, WebConstants.USER.toString());
-        checkParameterNotNull(endedRoomDTO, "endedRoomDTO");
+        checkParameterNotNull(endedRoomDTO, ADD_INFO_ROOM_DTO_TO_LOGGER);
 
-        int currentUserLevel = user.getLevel();
-        int currentPoint = user.getPoint();
+        var currentUserLevel = user.getLevel();
+        var currentPoint = user.getPoint();
 
-        int currentRoomLevel = endedRoomDTO.getLevel();
+        var currentRoomLevel = endedRoomDTO.getLevel();
 
         if (currentUserLevel == currentRoomLevel) {
             user.setLevel(currentRoomLevel + 1);
@@ -59,19 +61,19 @@ public class QuestService extends Service<Integer, Quest> {
 
     public boolean questIsSuccess(String questIdValue, String answerValue) {
         checkParameterNotNull(questIdValue, WebConstants.QUEST_ID.toString());
-        checkParameterNotNull(answerValue, "answer");
-        Integer questId = parsingStringToInt(questIdValue, "questIdValue", LOGGER);
-        int answerId = parsingStringToInt(answerValue, "answer", LOGGER);
+        checkParameterNotNull(answerValue, ADD_INFO_ANSWER_TO_LOGGER);
+        var questId = parsingStringToInt(questIdValue, ADD_INFO_QUEST_ID_TO_LOGGER, LOGGER);
+        var answerId = parsingStringToInt(answerValue, ADD_INFO_ANSWER_TO_LOGGER, LOGGER);
 
-        Quest quest = repository.getById(questId);
+        var quest = repository.getById(questId);
         return quest.isRightAnswer(answerId);
     }
 
     public void closeRoom(User user, RoomDTO endedRoom) {
         checkParameterNotNull(user, WebConstants.USER.toString());
-        checkParameterNotNull(endedRoom, "endedRoom");
+        checkParameterNotNull(endedRoom, ADD_INFO_ROOM_TO_LOGGER);
 
-        Integer endedRoomId = endedRoom.getId();
+        var endedRoomId = endedRoom.getId();
         user.getEndedQuest().add(endedRoomId);
     }
 }

@@ -7,8 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
@@ -21,16 +21,13 @@ public class Quest {
     private List<AnswerToQuest> answers;
 
     public List<AnswerToQuestDTO> getAnswerDTO() {
-        List<AnswerToQuestDTO> result = new ArrayList<>();
-        for (AnswerToQuest answer : answers) {
-            AnswerToQuestDTO answerToQuestDTO = new AnswerToQuestDTO(answer.getId(), answer.getText());
-            result.add(answerToQuestDTO);
-        }
-        return result;
+        return answers.stream()
+                .map(answer -> new AnswerToQuestDTO(answer.getId(), answer.getText()))
+                .collect(Collectors.toList());
     }
 
     public boolean isRightAnswer(int idAnswer) {
-        AnswerToQuest answer = answers.stream()
+        var answer = answers.stream()
                 .filter(x -> x.getId() == idAnswer)
                 .findFirst()
                 .orElse(null);
