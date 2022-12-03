@@ -17,8 +17,16 @@ public enum WebConstants {
     DIALOG ("dialog"),
     NEXT_QUESTION ("nextQuestion"),
     CURRENT_ROOM ("currentRoom"),
-    NEXT_ROOM ("nextRoom");
-    //DIALOG_PAGE ("/dialog");
+    NEXT_ROOM ("nextRoom"),
+    DIALOG_PAGE ("/dialog"),
+    ROOM_PAGE ("/room"),
+    QUEST_PAGE ("/quest"),
+    DIALOG_JSP ("/WEB-INF/dialog.jsp"),
+    INDEX_JSP ("/WEB-INF/index.jsp"),
+    ROOM_JSP ("/WEB-INF/room.jsp"),
+    QUEST_OVER_JSP ("/WEB-INF/questOver.jsp"),
+    GAME_OVER_JSP ("/WEB-INF/gameOver.jsp"),
+    QUEST_JSP ("/WEB-INF/quest.jsp");
 
     private final String text;
 

@@ -34,7 +34,7 @@ public class DialogServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getServletContext().getRequestDispatcher("/WEB-INF/dialog.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher(DIALOG_JSP.toString()).forward(request, response);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class DialogServlet extends HttpServlet {
         String questId = request.getParameter(QUEST_ID.toString());
         if (questId != null) {
             session.setAttribute(QUEST_ID.toString(), questId);
-            response.sendRedirect("/quest");
+            response.sendRedirect(QUEST_PAGE.toString());
             return;
         }
 
@@ -77,6 +77,6 @@ public class DialogServlet extends HttpServlet {
         }
 
         session.setAttribute(DIALOG.toString(), dialog);
-        response.sendRedirect("/dialog");
+        response.sendRedirect(DIALOG_PAGE.toString());
     }
 }

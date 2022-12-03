@@ -31,6 +31,22 @@ import java.util.stream.Collectors;
 @WebListener
 public class AppContextListener implements ServletContextListener {
     private static final Logger LOGGER = LogManager.getLogger(AppContextListener.class);
+    public static final String MESSAGE_ROOM_REPOSITORY_INITIALIZATION_SUCCESS =
+            "RoomRepository initialization success";
+    public static final String MESSAGE_NPC_REPOSITORY_INITIALIZATION_SUCCESS =
+            "NpcRepository initialization success";
+    public static final String MESSAGE_DIALOG_REPOSITORY_INITIALIZATION_SUCCESS =
+            "DialogRepository initialization success";
+    public static final String MESSAGE_QUEST_REPOSITORY_INITIALIZATION_SUCCESS =
+            "QuestRepository initialization success";
+    public static final String MESSAGE_ERROR_INITIALIZATION_ROOMS_REPOSITORY =
+            "Error during initialization RoomsRepository: ";
+    public static final String MESSAGE_ERROR_INITIALIZATION_NPC_REPOSITORY =
+            "Error during initialization NpcRepository: ";
+    public static final String MESSAGE_ERROR_INITIALIZATION_DIALOG_REPOSITORY =
+            "Error during initialization DialogRepository: ";
+    public static final String MESSAGE_ERROR_INITIALIZATION_QUEST_REPOSITORY =
+            "Error during initialization QuestRepository: ";
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -60,7 +76,7 @@ public class AppContextListener implements ServletContextListener {
         try {
             roomsArray = mapper.readValue(contents, Room[].class);
         } catch (JsonProcessingException e) {
-            String error = "Error during initialization RoomsRepository" + e;
+            String error = MESSAGE_ERROR_INITIALIZATION_ROOMS_REPOSITORY + e;
             LOGGER.error(error);
             throw new RuntimeException(error);
         }
@@ -69,7 +85,7 @@ public class AppContextListener implements ServletContextListener {
 
         RoomRepository roomRepository = new RoomRepository(Map.copyOf(initialMapRoom));
         servletContext.setAttribute(ROOMS_REPOSITORY.toString(), roomRepository);
-        LOGGER.debug("RoomRepository initialization success");
+        LOGGER.debug(MESSAGE_ROOM_REPOSITORY_INITIALIZATION_SUCCESS);
     }
 
     private void initializationNpcs(ServletContext servletContext) {
@@ -80,7 +96,7 @@ public class AppContextListener implements ServletContextListener {
         try {
             npcsArray = mapper.readValue(contents, Npc[].class);
         } catch (IOException e) {
-            String error = "Error during initialization NpcRepository" + e;
+            String error = MESSAGE_ERROR_INITIALIZATION_NPC_REPOSITORY + e;
             LOGGER.error(error);
             throw new RuntimeException(error);
         }
@@ -89,7 +105,7 @@ public class AppContextListener implements ServletContextListener {
 
         NpcRepository npcRepository = new NpcRepository(Map.copyOf(initialMapNpc));
         servletContext.setAttribute(NPC_REPOSITORY.toString(), npcRepository);
-        LOGGER.debug("NpcRepository initialization success");
+        LOGGER.debug(MESSAGE_NPC_REPOSITORY_INITIALIZATION_SUCCESS);
     }
 
     private void initializationDialogs(ServletContext servletContext) {
@@ -100,7 +116,7 @@ public class AppContextListener implements ServletContextListener {
         try {
             dialogsArray = mapper.readValue(contents, Dialog[].class);
         } catch (IOException e) {
-            String error = "Error during initialization DialogRepository" + e;
+            String error = MESSAGE_ERROR_INITIALIZATION_DIALOG_REPOSITORY + e;
             LOGGER.error(error);
             throw new RuntimeException(error);
         }
@@ -109,7 +125,7 @@ public class AppContextListener implements ServletContextListener {
 
         DialogRepository dialogRepository = new DialogRepository(Map.copyOf(initialMapDialog));
         servletContext.setAttribute(DIALOG_REPOSITORY.toString(), dialogRepository);
-        LOGGER.debug("DialogRepository initialization success");
+        LOGGER.debug(MESSAGE_DIALOG_REPOSITORY_INITIALIZATION_SUCCESS);
     }
 
     private void initializationQuests(ServletContext servletContext) {
@@ -118,7 +134,7 @@ public class AppContextListener implements ServletContextListener {
         Quest[] questArray;
         try {questArray = mapper.readValue(contents, Quest[].class);
         } catch (IOException e) {
-            String error = "Error during initialization QuestRepository" + e;
+            String error = MESSAGE_ERROR_INITIALIZATION_QUEST_REPOSITORY + e;
             LOGGER.error(error);
             throw new RuntimeException(error);
         }
@@ -127,7 +143,7 @@ public class AppContextListener implements ServletContextListener {
 
         QuestRepository questRepository = new QuestRepository(Map.copyOf(initialMapQuest));
         servletContext.setAttribute(QUEST_SERVICE.toString(), new QuestService(questRepository));
-        LOGGER.debug("QuestRepository initialization success");
+        LOGGER.debug(MESSAGE_QUEST_REPOSITORY_INITIALIZATION_SUCCESS);
     }
 
     private static void initializationUsers(ServletContext servletContext) {

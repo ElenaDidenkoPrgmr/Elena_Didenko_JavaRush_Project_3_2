@@ -25,6 +25,8 @@ import java.util.List;
 @WebServlet(name = "roomServlet", value = "/room")
 public class RoomServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(RoomServlet.class);
+    public static final String USER_GAME_OVER_STARTING = "User: ";
+    public static final String USER_GAME_OVER_ENDING = " ends game";
     private Repository<Integer, Room> roomRepository = null;
     private Repository<Integer, Npc> npcRepository = null;
     private User user = null;
@@ -50,13 +52,13 @@ public class RoomServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (user == null){
-            getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher(INDEX_JSP.toString()).forward(request, response);
         }
 
         int currentRoomId = user.getCurrentRoomId();
         if (currentRoomId == Room.FINISH_ROOM_ID) {
-            getServletContext().getRequestDispatcher("/WEB-INF/gameOver.jsp").forward(request, response);
-            LOGGER.debug("User: " + user.getName() + " ends game");
+            getServletContext().getRequestDispatcher(GAME_OVER_JSP.toString()).forward(request, response);
+            LOGGER.debug(USER_GAME_OVER_STARTING + user.getName() + USER_GAME_OVER_ENDING);
             return;
         }
 
@@ -80,7 +82,7 @@ public class RoomServlet extends HttpServlet {
 
         }
         session.setAttribute(NPC_REPOSITORY.toString(), npcList);
-        getServletContext().getRequestDispatcher("/WEB-INF/room.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher(ROOM_JSP.toString()).forward(request, response);
     }
 
     @Override
@@ -89,6 +91,6 @@ public class RoomServlet extends HttpServlet {
         if (nextRoom != null) {
             user.setCurrentRoomId(nextRoom);
         }
-        response.sendRedirect("/room");
+        response.sendRedirect(ROOM_PAGE.toString());
     }
 }

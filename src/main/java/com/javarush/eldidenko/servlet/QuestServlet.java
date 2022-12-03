@@ -36,7 +36,7 @@ public class QuestServlet extends HttpServlet {
             QuestDTO questInfo = questService.getQuestDTO(questId);
             session.setAttribute(QUEST_INFO.toString(), questInfo);
         }
-        getServletContext().getRequestDispatcher("/WEB-INF/quest.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher(QUEST_JSP.toString()).forward(request, response);
     }
 
     @Override
@@ -53,6 +53,6 @@ public class QuestServlet extends HttpServlet {
         } else session.setAttribute(RESULT_QUEST.toString(), false);
 
         questService.closeRoom(user, endedRoom);
-        getServletContext().getRequestDispatcher("/WEB-INF/questOver.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher(QUEST_OVER_JSP.toString()).forward(request, response);
     }
 }

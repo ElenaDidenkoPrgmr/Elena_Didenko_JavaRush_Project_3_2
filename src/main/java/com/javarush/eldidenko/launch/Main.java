@@ -17,6 +17,9 @@ import org.apache.logging.log4j.Logger;
 
 public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
+    public static final String MESSAGE_TOMCAT_STARTED_SUCCESSFUL = "Tomcat started successful, webPort: ";
+    public static final String MESSAGE_APPLICATION_ROOT_FOLDER_SUCCESS = "application resolved root folder: ";
+    public static final String MESSAGE_APPLICATION_ROOT_FOLDER_ERROR = "root folder doesnt resolved: ";
 
     private static File getRootFolder() {
         try {
@@ -28,11 +31,11 @@ public class Main {
             } else {
                 root = new File(runningJarPath.substring(0, lastIndexOf));
             }
-            LOGGER.debug("application resolved root folder: " + root.getAbsolutePath());
+            LOGGER.debug(MESSAGE_APPLICATION_ROOT_FOLDER_SUCCESS + root.getAbsolutePath());
 
             return root;
         } catch (URISyntaxException ex) {
-            String errorMsg = "root folder doesnt resolved: " + ex;
+            String errorMsg = MESSAGE_APPLICATION_ROOT_FOLDER_ERROR + ex;
             LOGGER.error(errorMsg);
             throw new RuntimeException(errorMsg);
         }
@@ -80,7 +83,7 @@ public class Main {
         ctx.setResources(resources);
 
         tomcat.start();
-        LOGGER.debug("Tomcat started successful, webPort: " + webPort);
+        LOGGER.debug(MESSAGE_TOMCAT_STARTED_SUCCESSFUL + webPort);
         tomcat.getConnector();
         tomcat.getServer().await();
     }

@@ -40,6 +40,6 @@ public class LoginServlet extends HttpServlet {
         User user = userService.initUser(userName);
         session.setAttribute(USER.toString(), user);
 
-        response.sendRedirect("/room");
+        response.sendRedirect(ROOM_PAGE.toString());
     }
 }
