@@ -34,9 +34,16 @@ public class AppContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
+
+        InitializationRooms(servletContext);
+        InitializationNpcs(servletContext);
+        InitializationDialogs(servletContext);
+        InitializationQuests(servletContext);
+        InitializationUsers(servletContext);
+    }
+
+    private void InitializationRooms(ServletContext servletContext) {
         ObjectMapper mapper = new JsonMapper();
-
-
         Map<Integer, Room> initialMapRoom;
         try (InputStream inputStream = getClass().getResourceAsStream("/rooms.json");
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
@@ -53,13 +60,16 @@ public class AppContextListener implements ServletContextListener {
         RoomRepository roomRepository = new RoomRepository(Collections.unmodifiableMap(initialMapRoom));
         servletContext.setAttribute("rooms", roomRepository);
         LOGGER.debug("RoomRepository initialization success");
+    }
 
+    private void InitializationNpcs(ServletContext servletContext) {
+        ObjectMapper mapper2 = new JsonMapper();
         Map<Integer, Npc> initialMapNpc;
         try (InputStream inputStream = getClass().getResourceAsStream("/npc.json");
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             String contents = reader.lines()
                     .collect(Collectors.joining(System.lineSeparator()));
-            Npc[] npcArray = mapper.readValue(contents, Npc[].class);
+            Npc[] npcArray = mapper2.readValue(contents, Npc[].class);
             initialMapNpc = Arrays.stream(npcArray)
                     .collect(Collectors.toMap(Npc::getId, Function.identity()));
         } catch (IOException e) {
@@ -70,13 +80,16 @@ public class AppContextListener implements ServletContextListener {
         NpcRepository npcRepository = new NpcRepository(Collections.unmodifiableMap(initialMapNpc));
         servletContext.setAttribute("npcs", npcRepository);
         LOGGER.debug("NpcRepository initialization success");
+    }
 
+    private void InitializationDialogs(ServletContext servletContext) {
+        ObjectMapper mapper3 = new JsonMapper();
         Map<Integer, Dialog> initialMapDialog;
         try (InputStream inputStream = getClass().getResourceAsStream("/dialog.json");
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             String contents = reader.lines()
                     .collect(Collectors.joining(System.lineSeparator()));
-            Dialog[] questionArray = mapper.readValue(contents, Dialog[].class);
+            Dialog[] questionArray = mapper3.readValue(contents, Dialog[].class);
             initialMapDialog = Arrays.stream(questionArray)
                     .collect(Collectors.toMap(Dialog::getId, Function.identity()));
         } catch (IOException e) {
@@ -87,13 +100,16 @@ public class AppContextListener implements ServletContextListener {
         DialogRepository dialogRepository = new DialogRepository(Collections.unmodifiableMap(initialMapDialog));
         servletContext.setAttribute("dialogs", dialogRepository);
         LOGGER.debug("DialogRepository initialization success");
+    }
 
+    private void InitializationQuests(ServletContext servletContext) {
+        ObjectMapper mapper4 = new JsonMapper();
         Map<Integer, Quest> initialMapQuest;
         try (InputStream inputStream = getClass().getResourceAsStream("/quest.json");
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             String contents = reader.lines()
                     .collect(Collectors.joining(System.lineSeparator()));
-            Quest[] questArray = mapper.readValue(contents, Quest[].class);
+            Quest[] questArray = mapper4.readValue(contents, Quest[].class);
             initialMapQuest = Arrays.stream(questArray)
                     .collect(Collectors.toMap(Quest::getId, Function.identity()));
         } catch (IOException e) {
@@ -104,7 +120,9 @@ public class AppContextListener implements ServletContextListener {
         QuestRepository questRepository = new QuestRepository(Collections.unmodifiableMap(initialMapQuest));
         servletContext.setAttribute("questsService", new QuestService(questRepository));
         LOGGER.debug("QuestRepository initialization success");
+    }
 
+    private static void InitializationUsers(ServletContext servletContext) {
         UserRepository userRepository = new UserRepository(new HashMap<>());
         servletContext.setAttribute("loginService", new LoginService(userRepository));
         LOGGER.debug("UserRepository created");
