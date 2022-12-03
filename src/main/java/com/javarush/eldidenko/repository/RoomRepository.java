@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RoomRepository extends Repository<Integer, Room> {
-    public RoomRepository(Map repository) {
+    public RoomRepository(Map<Integer, Room> repository) {
         super(repository);
     }
 

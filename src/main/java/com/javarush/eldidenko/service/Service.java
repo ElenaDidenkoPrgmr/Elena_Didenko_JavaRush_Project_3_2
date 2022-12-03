@@ -5,7 +5,7 @@ import com.javarush.eldidenko.service.exception.ServiceException;
 import org.apache.logging.log4j.Logger;
 
 public class Service<K, T> {
-    public final Repository<K, T> repository;
+    protected final Repository<K, T> repository;
 
     public Service(Repository repository) {
         this.repository = repository;
