@@ -4,6 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/function-contains.tld" prefix="fn" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.javarush.eldidenko.servlet.WebConstants" %>
+<%@ page import="com.javarush.eldidenko.servlet.WebConstants" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +38,7 @@
                                             <c:when test="${  fn:contains(user.getEndedQuest(), room.getId() ) }">
                                                 <form style="display: inline-block"
                                                       action="${pageContext.request.contextPath}/room" method="post">
-                                                    <input type="hidden" name="nextRoom" value="${room.getId()}">
+                                                    <input type="hidden" name=${WebConstants.NEXT_ROOM.toString()} value="${room.getId()}">
                                                     <button type="submit" class="btn btn-primary"
                                                             disabled>${room.getName()} </button>
                                                 </form>
@@ -46,7 +48,7 @@
                                                 <form style="display: inline-block"
                                                       action="${pageContext.request.contextPath}/room" method="post">
 
-                                                    <input type="hidden" name="nextRoom" value="${room.getId()}">
+                                                    <input type="hidden" name=${WebConstants.NEXT_ROOM.toString()} value="${room.getId()}">
                                                     <button type="submit"
                                                             class="btn btn-success">${room.getName()} </button>
 
@@ -57,7 +59,7 @@
                                                 <form style="display: inline-block"
                                                       action="${pageContext.request.contextPath}/room" method="post">
 
-                                                    <input type="hidden" name="nextRoom" value="${room.getId()}">
+                                                    <input type="hidden" name=${WebConstants.NEXT_ROOM.toString()} value="${room.getId()}">
                                                     <button type="submit" class="btn btn-primary"
                                                             disabled>${room.getName()} </button>
 
@@ -68,7 +70,7 @@
                                                 <form style="display: inline-block"
                                                       action="${pageContext.request.contextPath}/room" method="post">
 
-                                                    <input type="hidden" name="nextRoom" value="${room.getId()}">
+                                                    <input type="hidden" name=${WebConstants.NEXT_ROOM.toString()} value="${room.getId()}">
                                                     <button type="submit"
                                                             class="btn btn-primary">${room.getName()} </button>
                                                 </form>
@@ -100,7 +102,7 @@
                             <p class="card-text">${npc.getDescription()}</p>
 
                             <form action="${pageContext.request.contextPath}/dialog" method="post">
-                                <button type="submit" name="npcId" value="${npc.getId()}" class="btn btn-primary">Начать
+                                <button type="submit" name=${WebConstants.NPC_ID.toString()} value="${npc.getId()}" class="btn btn-primary">Начать
                                     диалог
                                 </button>
                             </form>

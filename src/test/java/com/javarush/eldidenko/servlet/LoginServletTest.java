@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import static com.javarush.eldidenko.servlet.WebConstants.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -49,7 +50,7 @@ class LoginServletTest {
         when(servletConfig.getServletContext())
                 .thenReturn(context);
 
-        when(context.getAttribute(eq("loginService")))
+        when(context.getAttribute(eq(LOGIN_SERVICE.toString())))
                 .thenReturn(userService);
 
         when(request.getSession())
@@ -65,12 +66,12 @@ class LoginServletTest {
         user.setName("test");
         user.setTotalGame(5);
 
-        when(request.getParameter("username")).thenReturn(null);
-        when(session.getAttribute("user")).thenReturn(user);
+        when(request.getParameter(USERNAME.toString())).thenReturn(null);
+        when(session.getAttribute(USER.toString())).thenReturn(user);
         when(userService.initUser("test")).thenReturn(user);
         loginServlet.doPost(request,response);
 
-        verify(session, times(1)).setAttribute("user", user);
+        verify(session, times(1)).setAttribute(USER.toString(), user);
         verify(response, times(1)).sendRedirect("/room");
     }
 
@@ -80,11 +81,11 @@ class LoginServletTest {
         user.setName("test");
         user.setTotalGame(5);
 
-        when(request.getParameter("username")).thenReturn("test");
+        when(request.getParameter(USERNAME.toString())).thenReturn("test");
         when(userService.initUser("test")).thenReturn(user);
         loginServlet.doPost(request,response);
 
-        verify(session, times(1)).setAttribute("user", user);
+        verify(session, times(1)).setAttribute(USER.toString(), user);
         verify(response, times(1)).sendRedirect("/room");
     }
 }

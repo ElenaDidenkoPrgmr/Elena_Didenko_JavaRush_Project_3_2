@@ -8,6 +8,7 @@ import com.javarush.eldidenko.entity.Quest;
 import com.javarush.eldidenko.entity.Dialog;
 import com.javarush.eldidenko.entity.Room;
 import com.javarush.eldidenko.repository.*;
+import static com.javarush.eldidenko.servlet.WebConstants.*;
 
 
 import org.apache.logging.log4j.Logger;
@@ -22,7 +23,6 @@ import javax.servlet.annotation.WebListener;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -68,7 +68,7 @@ public class AppContextListener implements ServletContextListener {
                 .collect(Collectors.toMap(Room::getId, Function.identity()));
 
         RoomRepository roomRepository = new RoomRepository(Map.copyOf(initialMapRoom));
-        servletContext.setAttribute("rooms", roomRepository);
+        servletContext.setAttribute(ROOMS_REPOSITORY.toString(), roomRepository);
         LOGGER.debug("RoomRepository initialization success");
     }
 
@@ -88,7 +88,7 @@ public class AppContextListener implements ServletContextListener {
                 .collect(Collectors.toMap(Npc::getId, Function.identity()));
 
         NpcRepository npcRepository = new NpcRepository(Map.copyOf(initialMapNpc));
-        servletContext.setAttribute("npcs", npcRepository);
+        servletContext.setAttribute(NPC_REPOSITORY.toString(), npcRepository);
         LOGGER.debug("NpcRepository initialization success");
     }
 
@@ -108,7 +108,7 @@ public class AppContextListener implements ServletContextListener {
                 .collect(Collectors.toMap(Dialog::getId, Function.identity()));
 
         DialogRepository dialogRepository = new DialogRepository(Map.copyOf(initialMapDialog));
-        servletContext.setAttribute("dialogs", dialogRepository);
+        servletContext.setAttribute(DIALOG_REPOSITORY.toString(), dialogRepository);
         LOGGER.debug("DialogRepository initialization success");
     }
 
@@ -126,13 +126,13 @@ public class AppContextListener implements ServletContextListener {
                 .collect(Collectors.toMap(Quest::getId, Function.identity()));
 
         QuestRepository questRepository = new QuestRepository(Map.copyOf(initialMapQuest));
-        servletContext.setAttribute("questsService", new QuestService(questRepository));
+        servletContext.setAttribute(QUEST_SERVICE.toString(), new QuestService(questRepository));
         LOGGER.debug("QuestRepository initialization success");
     }
 
     private static void initializationUsers(ServletContext servletContext) {
         UserRepository userRepository = new UserRepository(new HashMap<>());
-        servletContext.setAttribute("loginService", new LoginService(userRepository));
+        servletContext.setAttribute(LOGIN_SERVICE.toString(), new LoginService(userRepository));
         LOGGER.debug("UserRepository created");
     }
 }

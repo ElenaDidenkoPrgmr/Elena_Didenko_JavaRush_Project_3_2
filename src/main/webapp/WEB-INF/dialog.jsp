@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.javarush.eldidenko.servlet.WebConstants" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +45,7 @@
                 <div class="form-check">
                     <c:choose>
                         <c:when test="${answer.getNextDialogId() != null}">
-                            <input class="form-check-input" type="radio" name="nextQuestion" id="answers"
+                            <input class="form-check-input" type="radio" name=${WebConstants.NEXT_QUESTION.toString()} id="answers"
                                    value="${answer.getNextDialogId()}">
                             <label class="form-check-label" for="answers">${answer.getText()}</label>
                             <c:set var="buttonlabel" scope="page" value="Ответить"/>
@@ -52,7 +53,7 @@
                         </c:when>
 
                         <c:when test="${answer.getQuestId() != null}">
-                            <input class="form-check-input" type="radio" name="questId" id="answers"
+                            <input class="form-check-input" type="radio" name=${WebConstants.QUEST_ID.toString()} id="answers"
                                    value="${answer.getQuestId()}">
                             <label class="form-check-label" for="answers">${answer.getText()}</label>
                             <c:set var="buttonlabel" scope="page" value="Начать квест"/>

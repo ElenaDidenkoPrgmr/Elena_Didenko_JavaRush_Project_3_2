@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.javarush.eldidenko.servlet.WebConstants" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +31,7 @@
                 <form action="${pageContext.request.contextPath}/login" method="post">
                     <div class="form-group p-2">
                         <label for="usr">Введите имя:</label>
-                        <input type="text" class="form-control" id="usr" name="username">
+                        <input type="text" class="form-control" id="usr" name=${WebConstants.USERNAME.toString()}>
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary btn-block">Начать квест</button>

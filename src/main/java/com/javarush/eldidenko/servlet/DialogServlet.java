@@ -7,6 +7,7 @@ import com.javarush.eldidenko.entity.Npc;
 import com.javarush.eldidenko.repository.DialogRepository;
 import com.javarush.eldidenko.repository.NpcRepository;
 import com.javarush.eldidenko.repository.Repository;
+import static com.javarush.eldidenko.servlet.WebConstants.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -27,8 +28,8 @@ public class DialogServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         ServletContext servletContext = config.getServletContext();
-        npcRepository = (NpcRepository) servletContext.getAttribute("npcs");
-        dialogRepository = (DialogRepository) servletContext.getAttribute("dialogs");
+        npcRepository = (NpcRepository) servletContext.getAttribute(NPC_REPOSITORY.toString());
+        dialogRepository = (DialogRepository) servletContext.getAttribute(DIALOG_REPOSITORY.toString());
     }
 
     @Override
@@ -41,7 +42,7 @@ public class DialogServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         Npc npc;
-        String npcId = request.getParameter("npcId");
+        String npcId = request.getParameter(NPC_ID.toString());
         if (npcId != null) {
             npc = npcRepository.getById(Integer.parseInt(npcId));
 
@@ -52,21 +53,21 @@ public class DialogServlet extends HttpServlet {
                     .description(npc.getDescription())
                     .build();
 
-            session.setAttribute("npcInfo",npcInfo);
+            session.setAttribute(NPC_INFO.toString(), npcInfo);
         }else {
-            NpcDTO npcDTO = (NpcDTO) session.getAttribute("npcInfo");
+            NpcDTO npcDTO = (NpcDTO) session.getAttribute(NPC_INFO.toString());
             npc = npcRepository.getById(npcDTO.getId());
         }
 
-        String questId = request.getParameter("questId");
+        String questId = request.getParameter(QUEST_ID.toString());
         if (questId != null) {
-            session.setAttribute("questId",questId);
+            session.setAttribute(QUEST_ID.toString(), questId);
             response.sendRedirect("/quest");
             return;
         }
 
         Dialog dialog;
-        String nextQuestionId = request.getParameter("nextQuestion");
+        String nextQuestionId = request.getParameter(NEXT_QUESTION.toString());
 
         if (nextQuestionId != null) {
             dialog = dialogRepository.getById(Integer.parseInt(nextQuestionId));
@@ -75,7 +76,7 @@ public class DialogServlet extends HttpServlet {
             dialog = dialogRepository.getById(questionId);
         }
 
-        session.setAttribute("dialog", dialog);
+        session.setAttribute(DIALOG.toString(), dialog);
         response.sendRedirect("/dialog");
     }
 }

@@ -7,6 +7,7 @@ import com.javarush.eldidenko.entity.Quest;
 import com.javarush.eldidenko.entity.User;
 import com.javarush.eldidenko.repository.Repository;
 import com.javarush.eldidenko.service.exception.ServiceException;
+import static com.javarush.eldidenko.servlet.WebConstants.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,7 +30,7 @@ public class QuestService extends Service<Integer, Quest> {
     }
 
     public QuestDTO getQuestDTO(String questIdValue) {
-        checkParameterNotNull(questIdValue, "questId");
+        checkParameterNotNull(questIdValue, QUEST_ID.toString());
         Integer questId = parsingStringToInt(questIdValue, "questIdValue", LOGGER);
 
         Quest quest = repository.getById(questId);
@@ -41,7 +42,7 @@ public class QuestService extends Service<Integer, Quest> {
     }
 
     public void setUserLevelAndPoints(User user, RoomDTO endedRoomDTO) {
-        checkParameterNotNull(user, "user");
+        checkParameterNotNull(user, USER.toString());
         checkParameterNotNull(endedRoomDTO, "endedRoomDTO");
 
         int currentUserLevel = user.getLevel();
@@ -56,7 +57,7 @@ public class QuestService extends Service<Integer, Quest> {
     }
 
     public boolean questIsSuccess(String questIdValue, String answerValue) {
-        checkParameterNotNull(questIdValue, "questId");
+        checkParameterNotNull(questIdValue, QUEST_ID.toString());
         checkParameterNotNull(answerValue, "answer");
         Integer questId = parsingStringToInt(questIdValue, "questIdValue", LOGGER);
         int answerId = parsingStringToInt(answerValue, "answer", LOGGER);
@@ -66,7 +67,7 @@ public class QuestService extends Service<Integer, Quest> {
     }
 
     public void closeRoom(User user, RoomDTO endedRoom) {
-        checkParameterNotNull(user, "user");
+        checkParameterNotNull(user, USER.toString());
         checkParameterNotNull(endedRoom, "endedRoom");
 
         Integer endedRoomId = endedRoom.getId();

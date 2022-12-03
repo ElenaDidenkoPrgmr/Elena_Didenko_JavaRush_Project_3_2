@@ -10,6 +10,7 @@ import com.javarush.eldidenko.repository.Repository;
 import com.javarush.eldidenko.repository.RoomRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import static com.javarush.eldidenko.servlet.WebConstants.*;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -32,15 +33,15 @@ public class RoomServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         ServletContext servletContext = config.getServletContext();
-        roomRepository = (RoomRepository) servletContext.getAttribute("rooms");
-        npcRepository = (NpcRepository) servletContext.getAttribute("npcs");
+        roomRepository = (RoomRepository) servletContext.getAttribute(ROOMS_REPOSITORY.toString());
+        npcRepository = (NpcRepository) servletContext.getAttribute(NPC_REPOSITORY.toString());
     }
 
     @Override
     public void service(ServletRequest request, ServletResponse response)
             throws ServletException, IOException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        user = (User) httpServletRequest.getSession().getAttribute("user");
+        user = (User) httpServletRequest.getSession().getAttribute(USER.toString());
         super.service(request, response);
     }
 
@@ -66,7 +67,7 @@ public class RoomServlet extends HttpServlet {
                 .level(currentRoom.getLevel())
                 .build();
 
-        session.setAttribute("currentRoom", roomInfo);
+        session.setAttribute(CURRENT_ROOM.toString(), roomInfo);
 
         List<NpcDTO> npcList = new ArrayList<>();
         for (Integer npcId : currentRoom.getNpc()) {
@@ -78,13 +79,13 @@ public class RoomServlet extends HttpServlet {
                     .build());
 
         }
-        session.setAttribute("npcs", npcList);
+        session.setAttribute(NPC_REPOSITORY.toString(), npcList);
         getServletContext().getRequestDispatcher("/WEB-INF/room.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Integer nextRoom = Integer.valueOf(request.getParameter("nextRoom"));
+        Integer nextRoom = Integer.valueOf(request.getParameter(NEXT_ROOM.toString()));
         if (nextRoom != null) {
             user.setCurrentRoomId(nextRoom);
         }

@@ -5,6 +5,7 @@ import com.javarush.eldidenko.dto.RoomDTO;
 import com.javarush.eldidenko.entity.User;
 
 import com.javarush.eldidenko.service.QuestService;
+import static com.javarush.eldidenko.servlet.WebConstants.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -24,16 +25,16 @@ public class QuestServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         ServletContext servletContext = config.getServletContext();
-        questService = (QuestService) servletContext.getAttribute("questsService");
+        questService = (QuestService) servletContext.getAttribute(QUEST_SERVICE.toString());
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String questId = (String) session.getAttribute("questId");
+        String questId = (String) session.getAttribute(QUEST_ID.toString());
         if (questId != null) {
             QuestDTO questInfo = questService.getQuestDTO(questId);
-            session.setAttribute("questInfo", questInfo);
+            session.setAttribute(QUEST_INFO.toString(), questInfo);
         }
         getServletContext().getRequestDispatcher("/WEB-INF/quest.jsp").forward(request, response);
     }
@@ -41,15 +42,15 @@ public class QuestServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        String questId = (String) session.getAttribute("questId");
-        String questAnswerId = request.getParameter("questAnswerId");
-        RoomDTO endedRoom = (RoomDTO) session.getAttribute("currentRoom");
+        User user = (User) session.getAttribute(USER.toString());
+        String questId = (String) session.getAttribute(QUEST_ID.toString());
+        String questAnswerId = request.getParameter(QUEST_ANSWER_ID.toString());
+        RoomDTO endedRoom = (RoomDTO) session.getAttribute(CURRENT_ROOM.toString());
 
         if (questService.questIsSuccess(questId, questAnswerId)) {
             questService.setUserLevelAndPoints(user, endedRoom);
-            session.setAttribute("resultQuest", true);
-        } else session.setAttribute("resultQuest", false);
+            session.setAttribute(RESULT_QUEST.toString(), true);
+        } else session.setAttribute(RESULT_QUEST.toString(), false);
 
         questService.closeRoom(user, endedRoom);
         getServletContext().getRequestDispatcher("/WEB-INF/questOver.jsp").forward(request, response);

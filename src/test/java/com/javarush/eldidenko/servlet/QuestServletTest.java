@@ -6,6 +6,7 @@ import com.javarush.eldidenko.dto.RoomDTO;
 import com.javarush.eldidenko.entity.User;
 import com.javarush.eldidenko.service.QuestService;
 import com.javarush.eldidenko.servlet.QuestServlet;
+import static com.javarush.eldidenko.servlet.WebConstants.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,7 +57,7 @@ class QuestServletTest {
         when(servletConfig.getServletContext())
                 .thenReturn(context);
 
-        when(context.getAttribute(eq("questsService")))
+        when(context.getAttribute(eq(QUEST_SERVICE.toString())))
                 .thenReturn(questService);
 
         when(request.getSession())
@@ -79,12 +80,12 @@ class QuestServletTest {
                                 .text("answer2")
                                 .build()))
                 .build();
-        when(session.getAttribute("questId")).thenReturn("1");
+        when(session.getAttribute(QUEST_ID.toString())).thenReturn("1");
         when(questService.getQuestDTO("1")).thenReturn(questDTO);
         when(context.getRequestDispatcher(eq("/WEB-INF/quest.jsp")))
                 .thenReturn(requestDispatcher);
         questServlet.doGet(request,response);
-        verify(session,times(1)).setAttribute("questInfo",questDTO);
+        verify(session,times(1)).setAttribute(QUEST_INFO.toString(), questDTO);
         verify(requestDispatcher, times(1))
                 .forward(request, response);
     }
@@ -102,11 +103,11 @@ class QuestServletTest {
                                 .text("answer2")
                                 .build()))
                 .build();
-        when(session.getAttribute("questId")).thenReturn(null);
+        when(session.getAttribute(QUEST_ID.toString())).thenReturn(null);
         when(context.getRequestDispatcher(eq("/WEB-INF/quest.jsp")))
                 .thenReturn(requestDispatcher);
         questServlet.doGet(request,response);
-        verify(session,times(0)).setAttribute("questInfo",questDTO);
+        verify(session,times(0)).setAttribute(QUEST_INFO.toString(), questDTO);
         verify(requestDispatcher, times(1))
                 .forward(request, response);
     }
@@ -120,10 +121,10 @@ class QuestServletTest {
                 .name("testRoom")
                 .build();
 
-        when(session.getAttribute("user")).thenReturn(testUser);
-        when(session.getAttribute("questId")).thenReturn("3");
-        when(request.getParameter("questAnswerId")).thenReturn("4");
-        when(session.getAttribute("currentRoom")).thenReturn(roomDTO);
+        when(session.getAttribute(USER.toString())).thenReturn(testUser);
+        when(session.getAttribute(QUEST_ID.toString())).thenReturn("3");
+        when(request.getParameter(QUEST_ANSWER_ID.toString())).thenReturn("4");
+        when(session.getAttribute(CURRENT_ROOM.toString())).thenReturn(roomDTO);
         when(questService.questIsSuccess("3", "4")).thenReturn(true);
         when(context.getRequestDispatcher(eq("/WEB-INF/questOver.jsp")))
                 .thenReturn(requestDispatcher);
@@ -131,7 +132,7 @@ class QuestServletTest {
         questServlet.doPost(request,response);
 
         verify(questService,times(1)).setUserLevelAndPoints(testUser, roomDTO);
-        verify(session,times(1)).setAttribute("resultQuest", true);
+        verify(session,times(1)).setAttribute(RESULT_QUEST.toString(), true);
         verify(questService,times(1)).closeRoom(testUser, roomDTO);
         verify(requestDispatcher, times(1))
                 .forward(request, response);
@@ -146,10 +147,10 @@ class QuestServletTest {
                 .name("testRoom")
                 .build();
 
-        when(session.getAttribute("user")).thenReturn(testUser);
-        when(session.getAttribute("questId")).thenReturn("3");
-        when(request.getParameter("questAnswerId")).thenReturn("4");
-        when(session.getAttribute("currentRoom")).thenReturn(roomDTO);
+        when(session.getAttribute(USER.toString())).thenReturn(testUser);
+        when(session.getAttribute(QUEST_ID.toString())).thenReturn("3");
+        when(request.getParameter(QUEST_ANSWER_ID.toString())).thenReturn("4");
+        when(session.getAttribute(CURRENT_ROOM.toString())).thenReturn(roomDTO);
         when(questService.questIsSuccess("3", "4")).thenReturn(false);
         when(context.getRequestDispatcher(eq("/WEB-INF/questOver.jsp")))
                 .thenReturn(requestDispatcher);
@@ -157,7 +158,7 @@ class QuestServletTest {
         questServlet.doPost(request,response);
 
         verify(questService,times(0)).setUserLevelAndPoints(testUser,roomDTO);
-        verify(session,times(1)).setAttribute("resultQuest", false);
+        verify(session,times(1)).setAttribute(RESULT_QUEST.toString(), false);
         verify(questService,times(1)).closeRoom(testUser, roomDTO);
         verify(requestDispatcher, times(1))
                 .forward(request, response);
