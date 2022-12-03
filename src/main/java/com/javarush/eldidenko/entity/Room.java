@@ -16,7 +16,7 @@ import java.util.Objects;
 @Setter
 @Data
 @NoArgsConstructor
-public class Room implements Serializable {
+public class Room {
 
     public static final int START_ROOM_ID = 1;
     public static final int START_LEVEL = 0;

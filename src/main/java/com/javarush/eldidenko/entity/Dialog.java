@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @Data
 @NoArgsConstructor
-public class Dialog implements Serializable {
+public class Dialog {
     private int id;
     private String text;
     private List<AnswerToDialog> answers;

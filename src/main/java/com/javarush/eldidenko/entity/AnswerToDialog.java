@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Setter
 @Data
 @NoArgsConstructor
-public class AnswerToDialog implements Serializable {
+public class AnswerToDialog {
     private String text;
     private Integer nextDialogId;
     private Integer questId;

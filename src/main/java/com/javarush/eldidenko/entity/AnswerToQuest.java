@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Setter
 @Data
 @NoArgsConstructor
-public class AnswerToQuest implements Serializable {
+public class AnswerToQuest {
     private int id;
     private String text;
     @JsonProperty
