@@ -1,8 +1,7 @@
 package com.javarush.eldidenko.servlet_quest.service;
 
 import com.javarush.eldidenko.servlet_quest.entity.User;
-import com.javarush.eldidenko.servlet_quest.repository.Repository;
-import com.javarush.eldidenko.servlet_quest.service.LoginService;
+import com.javarush.eldidenko.servlet_quest.repository.UserRepository;
 import com.javarush.eldidenko.servlet_quest.service.exception.ServiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,7 @@ import static org.mockito.Mockito.*;
 class LoginServiceTest {
 
     @Mock
-    private Repository<String, User> userRepository;
+    private UserRepository userRepository;
 
     private LoginService loginService;
 

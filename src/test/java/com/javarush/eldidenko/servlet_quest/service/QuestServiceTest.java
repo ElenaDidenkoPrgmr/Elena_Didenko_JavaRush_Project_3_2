@@ -5,8 +5,7 @@ import com.javarush.eldidenko.servlet_quest.dto.RoomDTO;
 import com.javarush.eldidenko.servlet_quest.entity.AnswerToQuest;
 import com.javarush.eldidenko.servlet_quest.entity.Quest;
 import com.javarush.eldidenko.servlet_quest.entity.User;
-import com.javarush.eldidenko.servlet_quest.repository.Repository;
-import com.javarush.eldidenko.servlet_quest.service.QuestService;
+import com.javarush.eldidenko.servlet_quest.repository.QuestRepository;
 import com.javarush.eldidenko.servlet_quest.service.exception.ServiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,13 +24,13 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class QuestServiceTest {
 
-   @Mock
-    private Repository<Integer, Quest> questRepository;
+    @Mock
+    private QuestRepository questRepository;
 
     private QuestService questService;
 
     @BeforeEach
-    void init(){
+    void init() {
         questService = new QuestService(questRepository);
     }
 
@@ -56,7 +55,7 @@ class QuestServiceTest {
                 .build();
         QuestDTO actualDTO = questService.getQuestDTO("1");
 
-        assertEquals(expectedDTO,actualDTO);
+        assertEquals(expectedDTO, actualDTO);
     }
 
     @Test
@@ -68,10 +67,10 @@ class QuestServiceTest {
         RoomDTO endedRoom = Mockito.mock(RoomDTO.class);
         when(endedRoom.getLevel()).thenReturn(2);
 
-        questService.setUserLevelAndPoints(testUser,endedRoom);
+        questService.setUserLevelAndPoints(testUser, endedRoom);
 
-        assertEquals(3,testUser.getLevel());
-        assertEquals(30 + endedRoom.getLevel() * 10,testUser.getPoint());
+        assertEquals(3, testUser.getLevel());
+        assertEquals(30 + endedRoom.getLevel() * 10, testUser.getPoint());
     }
 
     @Test
@@ -86,9 +85,9 @@ class QuestServiceTest {
 
         testQuest.setAnswers(Arrays.asList(answer1));
 
-        when(questService.repository.getById(1)).thenReturn(testQuest);
+        when(questRepository.getById(1)).thenReturn(testQuest);
 
-        assertEquals(true, questService.questIsSuccess("1","1"));
+        assertTrue(questService.questIsSuccess("1", "1"));
     }
 
     @Test
@@ -103,9 +102,9 @@ class QuestServiceTest {
 
         testQuest.setAnswers(Arrays.asList(answer1));
 
-        when(questService.repository.getById(1)).thenReturn(testQuest);
+        when(questRepository.getById(1)).thenReturn(testQuest);
 
-        assertEquals(false, questService.questIsSuccess("1","1"));
+        assertFalse(questService.questIsSuccess("1", "1"));
     }
 
     @Test
@@ -116,7 +115,7 @@ class QuestServiceTest {
         RoomDTO endedRoom = Mockito.mock(RoomDTO.class);
         when(endedRoom.getId()).thenReturn(2);
 
-        questService.closeRoom(testUser,endedRoom);
-        assertEquals(true,testUser.getEndedQuest().contains(2));
+        questService.closeRoom(testUser, endedRoom);
+        assertTrue(testUser.getEndedQuest().contains(2));
     }
 }

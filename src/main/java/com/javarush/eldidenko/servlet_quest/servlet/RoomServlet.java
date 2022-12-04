@@ -1,13 +1,9 @@
 package com.javarush.eldidenko.servlet_quest.servlet;
 
 import com.javarush.eldidenko.servlet_quest.dto.NpcDTO;
-import com.javarush.eldidenko.servlet_quest.dto.RoomDTO;
-import com.javarush.eldidenko.servlet_quest.entity.Npc;
 import com.javarush.eldidenko.servlet_quest.entity.Room;
 import com.javarush.eldidenko.servlet_quest.entity.User;
-import com.javarush.eldidenko.servlet_quest.repository.NpcRepository;
-import com.javarush.eldidenko.servlet_quest.repository.Repository;
-import com.javarush.eldidenko.servlet_quest.repository.RoomRepository;
+import com.javarush.eldidenko.servlet_quest.service.RoomService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,23 +15,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "roomServlet", value = "/room")
 public class RoomServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(RoomServlet.class);
     private static final String USER_GAME_OVER = "User: {} ends game";
-    private Repository<Integer, Room> roomRepository = null;
-    private Repository<Integer, Npc> npcRepository = null;
+    private RoomService roomService;
     private User user = null;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         var servletContext = config.getServletContext();
-        roomRepository = (RoomRepository) servletContext.getAttribute(ROOMS_REPOSITORY.toString());
-        npcRepository = (NpcRepository) servletContext.getAttribute(NPC_REPOSITORY.toString());
+        roomService = (RoomService) servletContext.getAttribute(ROOM_SERVICE.toString());
     }
 
     @Override
@@ -61,25 +54,10 @@ public class RoomServlet extends HttpServlet {
             return;
         }
 
-        var currentRoom = roomRepository.getById(currentRoomId);
-        var roomInfo = RoomDTO.builder()
-                .id(currentRoomId)
-                .name(currentRoom.getName())
-                .level(currentRoom.getLevel())
-                .build();
+        var currentRoom = roomService.getRoomByRoomId(currentRoomId);
+        session.setAttribute(CURRENT_ROOM.toString(), currentRoom.getRoomDTO());
 
-        session.setAttribute(CURRENT_ROOM.toString(), roomInfo);
-
-        List<NpcDTO> npcList = new ArrayList<>();
-        for (var npcId : currentRoom.getNpc()) {
-            npcList.add(NpcDTO.builder()
-                    .id(npcId)
-                    .name(npcRepository.getById(npcId).getName())
-                    .avatar(npcRepository.getById(npcId).getAvatar())
-                    .description(npcRepository.getById(npcId).getDescription())
-                    .build());
-
-        }
+        List<NpcDTO> npcList = roomService.getNpcDTOList(currentRoom);
         session.setAttribute(NPC_REPOSITORY.toString(), npcList);
         getServletContext().getRequestDispatcher(ROOM_JSP.toString()).forward(request, response);
     }

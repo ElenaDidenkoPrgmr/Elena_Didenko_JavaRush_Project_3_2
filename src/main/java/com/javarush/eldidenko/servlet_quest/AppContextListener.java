@@ -6,9 +6,12 @@ import com.javarush.eldidenko.servlet_quest.entity.Npc;
 import com.javarush.eldidenko.servlet_quest.entity.Quest;
 import com.javarush.eldidenko.servlet_quest.entity.Dialog;
 import com.javarush.eldidenko.servlet_quest.entity.Room;
+
 import static com.javarush.eldidenko.servlet_quest.servlet.WebConstants.*;
 
 import com.javarush.eldidenko.servlet_quest.repository.*;
+import com.javarush.eldidenko.servlet_quest.service.DialogService;
+import com.javarush.eldidenko.servlet_quest.service.RoomService;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import com.javarush.eldidenko.servlet_quest.service.LoginService;
@@ -33,10 +36,14 @@ public class AppContextListener implements ServletContextListener {
             "RoomRepository initialization success";
     private static final String MESSAGE_NPC_REPOSITORY_INITIALIZATION_SUCCESS =
             "NpcRepository initialization success";
-    private static final String MESSAGE_DIALOG_REPOSITORY_INITIALIZATION_SUCCESS =
-            "DialogRepository initialization success";
-    private static final String MESSAGE_QUEST_REPOSITORY_INITIALIZATION_SUCCESS =
-            "QuestRepository initialization success";
+    private static final String MESSAGE_QUEST_SERVICE_INITIALIZATION_SUCCESS =
+            "QuestService initialization success";
+    private static final String MESSAGE_DIALOG_SERVICE_INITIALIZATION_SUCCESS =
+            "DialogService initialization success";
+    private static final String MESSAGE_ROOM_SERVICE_INITIALIZATION_SUCCESS =
+            "RoomService initialization success";
+    private static final String MESSAGE_LOGIN_SERVICE_INITIALIZATION_SUCCESS =
+            "LoginService initialization success";
     private static final String MESSAGE_ERROR_INITIALIZATION_ROOMS_REPOSITORY =
             "Error during initialization RoomsRepository: ";
     private static final String MESSAGE_ERROR_INITIALIZATION_NPC_REPOSITORY =
@@ -50,43 +57,56 @@ public class AppContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         var servletContext = servletContextEvent.getServletContext();
 
-        initializationRooms(servletContext);
-        initializationNpcs(servletContext);
-        initializationDialogs(servletContext);
-        initializationQuests(servletContext);
-        initializationUsers(servletContext);
+        initializationQuestsService(servletContext);
+        initializationUsersService(servletContext);
+        initializationDialogsService(servletContext);
+        initializationRoomService(servletContext);
+
+        initializationNpcRepository(servletContext);
+        initializationRoomRepository(servletContext);
     }
 
-    private String getFileContents(String fileName) {
-        String contents;
-        var inputStream = getClass().getResourceAsStream(fileName);
-        var reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-        contents = reader.lines()
-                .collect(Collectors.joining(System.lineSeparator()));
-        return contents;
+    private void initializationDialogsService(ServletContext servletContext) {
+        DialogRepository dialogRepository = createDialogsRepository();
+        NpcRepository npcRepository = createNpcRepository();
+        servletContext.setAttribute(DIALOG_SERVICE.toString(),
+                new DialogService(dialogRepository, npcRepository));
+        LOGGER.debug(MESSAGE_DIALOG_SERVICE_INITIALIZATION_SUCCESS);
     }
 
-    private void initializationRooms(ServletContext servletContext) {
-        var mapper = new JsonMapper();
-        var contents = getFileContents("/rooms.json");
-        Room[] roomsArray;
+    private void initializationRoomService(ServletContext servletContext) {
+        RoomRepository roomRepository = createRoomRepository();
+        NpcRepository npcRepository = createNpcRepository();
+        servletContext.setAttribute(ROOM_SERVICE.toString(),
+                new RoomService(roomRepository, npcRepository));
+        LOGGER.debug(MESSAGE_ROOM_SERVICE_INITIALIZATION_SUCCESS);
+    }
 
-        try {
-            roomsArray = mapper.readValue(contents, Room[].class);
-        } catch (JsonProcessingException e) {
-            String error = MESSAGE_ERROR_INITIALIZATION_ROOMS_REPOSITORY + e;
-            LOGGER.error(error);
-            throw new RuntimeException(error);
-        }
-        var initialMapRoom = Arrays.stream(roomsArray)
-                .collect(Collectors.toMap(Room::getId, Function.identity()));
+    private void initializationUsersService(ServletContext servletContext) {
+        var userRepository = new UserRepository(new HashMap<>());
+        servletContext.setAttribute(LOGIN_SERVICE.toString(), new LoginService(userRepository));
+        LOGGER.debug(MESSAGE_LOGIN_SERVICE_INITIALIZATION_SUCCESS);
+    }
 
-        var roomRepository = new RoomRepository(Map.copyOf(initialMapRoom));
-        servletContext.setAttribute(ROOMS_REPOSITORY.toString(), roomRepository);
+    private void initializationQuestsService(ServletContext servletContext) {
+        QuestRepository questRepository = createQuestRepository();
+        servletContext.setAttribute(QUEST_SERVICE.toString(), new QuestService(questRepository));
+        LOGGER.debug(MESSAGE_QUEST_SERVICE_INITIALIZATION_SUCCESS);
+    }
+
+    private void initializationNpcRepository(ServletContext servletContext) {
+        var npcRepository = createNpcRepository();
+        servletContext.setAttribute(NPC_REPOSITORY.toString(), npcRepository);
+        LOGGER.debug(MESSAGE_NPC_REPOSITORY_INITIALIZATION_SUCCESS);
+    }
+
+    private void initializationRoomRepository(ServletContext servletContext) {
+        var roomRepository = createRoomRepository();
+        servletContext.setAttribute(ROOM_REPOSITORY.toString(), roomRepository);
         LOGGER.debug(MESSAGE_ROOM_REPOSITORY_INITIALIZATION_SUCCESS);
     }
 
-    private void initializationNpcs(ServletContext servletContext) {
+    private NpcRepository createNpcRepository() {
         var mapper = new JsonMapper();
         var contents = getFileContents("/npcs.json");
         Npc[] npcsArray;
@@ -100,13 +120,27 @@ public class AppContextListener implements ServletContextListener {
         }
         var initialMapNpc = Arrays.stream(npcsArray)
                 .collect(Collectors.toMap(Npc::getId, Function.identity()));
-
-        var npcRepository = new NpcRepository(Map.copyOf(initialMapNpc));
-        servletContext.setAttribute(NPC_REPOSITORY.toString(), npcRepository);
-        LOGGER.debug(MESSAGE_NPC_REPOSITORY_INITIALIZATION_SUCCESS);
+        return new NpcRepository(Map.copyOf(initialMapNpc));
     }
 
-    private void initializationDialogs(ServletContext servletContext) {
+    private QuestRepository createQuestRepository() {
+        var mapper = new JsonMapper();
+        var contents = getFileContents("/quests.json");
+        Quest[] questArray;
+        try {
+            questArray = mapper.readValue(contents, Quest[].class);
+        } catch (IOException e) {
+            var error = MESSAGE_ERROR_INITIALIZATION_QUEST_REPOSITORY + e;
+            LOGGER.error(error);
+            throw new RuntimeException(error);
+        }
+        var initialMapQuest = Arrays.stream(questArray)
+                .collect(Collectors.toMap(Quest::getId, Function.identity()));
+
+        return new QuestRepository(Map.copyOf(initialMapQuest));
+    }
+
+    private DialogRepository createDialogsRepository() {
         var mapper = new JsonMapper();
         var contents = getFileContents("/dialogs.json");
         Dialog[] dialogsArray;
@@ -120,33 +154,32 @@ public class AppContextListener implements ServletContextListener {
         }
         var initialMapDialog = Arrays.stream(dialogsArray)
                 .collect(Collectors.toMap(Dialog::getId, Function.identity()));
-
-        var dialogRepository = new DialogRepository(Map.copyOf(initialMapDialog));
-        servletContext.setAttribute(DIALOG_REPOSITORY.toString(), dialogRepository);
-        LOGGER.debug(MESSAGE_DIALOG_REPOSITORY_INITIALIZATION_SUCCESS);
+        return new DialogRepository(Map.copyOf(initialMapDialog));
     }
 
-    private void initializationQuests(ServletContext servletContext) {
+    private RoomRepository createRoomRepository() {
         var mapper = new JsonMapper();
-        var contents = getFileContents("/quests.json");
-        Quest[] questArray;
-        try {questArray = mapper.readValue(contents, Quest[].class);
-        } catch (IOException e) {
-            var error = MESSAGE_ERROR_INITIALIZATION_QUEST_REPOSITORY + e;
+        var contents = getFileContents("/rooms.json");
+        Room[] roomsArray;
+
+        try {
+            roomsArray = mapper.readValue(contents, Room[].class);
+        } catch (JsonProcessingException e) {
+            String error = MESSAGE_ERROR_INITIALIZATION_ROOMS_REPOSITORY + e;
             LOGGER.error(error);
             throw new RuntimeException(error);
         }
-        var initialMapQuest = Arrays.stream(questArray)
-                .collect(Collectors.toMap(Quest::getId, Function.identity()));
-
-        var questRepository = new QuestRepository(Map.copyOf(initialMapQuest));
-        servletContext.setAttribute(QUEST_SERVICE.toString(), new QuestService(questRepository));
-        LOGGER.debug(MESSAGE_QUEST_REPOSITORY_INITIALIZATION_SUCCESS);
+        var initialMapRoom = Arrays.stream(roomsArray)
+                .collect(Collectors.toMap(Room::getId, Function.identity()));
+        return new RoomRepository(Map.copyOf(initialMapRoom));
     }
 
-    private static void initializationUsers(ServletContext servletContext) {
-        var userRepository = new UserRepository(new HashMap<>());
-        servletContext.setAttribute(LOGIN_SERVICE.toString(), new LoginService(userRepository));
-        LOGGER.debug("UserRepository created");
+    private String getFileContents(String fileName) {
+        String contents;
+        var inputStream = getClass().getResourceAsStream(fileName);
+        var reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        contents = reader.lines()
+                .collect(Collectors.joining(System.lineSeparator()));
+        return contents;
     }
 }

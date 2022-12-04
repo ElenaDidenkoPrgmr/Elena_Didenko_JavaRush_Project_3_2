@@ -2,7 +2,7 @@ package com.javarush.eldidenko.servlet_quest.service;
 
 import com.javarush.eldidenko.servlet_quest.entity.Room;
 import com.javarush.eldidenko.servlet_quest.entity.User;
-import com.javarush.eldidenko.servlet_quest.repository.Repository;
+import com.javarush.eldidenko.servlet_quest.repository.UserRepository;
 import com.javarush.eldidenko.servlet_quest.service.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,9 +11,10 @@ import java.util.ArrayList;
 
 public class LoginService extends Service<String, User> {
     private static final Logger LOGGER = LogManager.getLogger(LoginService.class);
+    private final UserRepository userRepository;
 
-    public LoginService(Repository<String, User> repository) {
-        super(repository);
+    public LoginService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public User initUser(String userName) {
@@ -24,8 +25,8 @@ public class LoginService extends Service<String, User> {
         }
 
         var totalGame = User.START_TOTAL_GAME;
-        if (repository.containsId(userName)) {
-            totalGame = repository.getById(userName).getTotalGame() + 1;
+        if (userRepository.containsId(userName)) {
+            totalGame = userRepository.getById(userName).getTotalGame() + 1;
         }
         var user = User.builder()
                 .name(userName)
@@ -36,7 +37,7 @@ public class LoginService extends Service<String, User> {
                 .endedQuest(new ArrayList<>())
                 .build();
 
-        repository.add(userName, user);
+        userRepository.add(userName, user);
         LOGGER.debug("User: {} starts game", userName);
         return user;
     }

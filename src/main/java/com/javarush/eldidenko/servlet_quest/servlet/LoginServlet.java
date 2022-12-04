@@ -1,8 +1,6 @@
 package com.javarush.eldidenko.servlet_quest.servlet;
 
 import com.javarush.eldidenko.servlet_quest.entity.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import com.javarush.eldidenko.servlet_quest.service.LoginService;
 
 import javax.servlet.ServletConfig;
@@ -17,7 +15,6 @@ import static com.javarush.eldidenko.servlet_quest.servlet.WebConstants.*;
 
 @WebServlet(name = "loginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {
-    private static final Logger LOGGER = LogManager.getLogger(LoginServlet.class);
     private LoginService userService;
 
     @Override

@@ -4,7 +4,7 @@ import com.javarush.eldidenko.servlet_quest.dto.QuestDTO;
 import com.javarush.eldidenko.servlet_quest.dto.RoomDTO;
 import com.javarush.eldidenko.servlet_quest.entity.Quest;
 import com.javarush.eldidenko.servlet_quest.entity.User;
-import com.javarush.eldidenko.servlet_quest.repository.Repository;
+import com.javarush.eldidenko.servlet_quest.repository.QuestRepository;
 import com.javarush.eldidenko.servlet_quest.service.exception.ServiceException;
 
 import static com.javarush.eldidenko.servlet_quest.servlet.WebConstants.*;
@@ -24,8 +24,10 @@ public class QuestService extends Service<Integer, Quest> {
     private static final String ADD_INFO_ROOM_DTO_TO_LOGGER = "endedRoomDTO";
     private static final String ADD_INFO_ROOM_TO_LOGGER = "endedRoom";
 
-    public QuestService(Repository<Integer, Quest> repository) {
-        super(repository);
+    private final QuestRepository questRepository;
+
+    public QuestService(QuestRepository questRepository) {
+        this.questRepository = questRepository;
     }
 
     private void checkParameterNotNull(Object parameter, String parameterName) {
@@ -40,7 +42,7 @@ public class QuestService extends Service<Integer, Quest> {
         checkParameterNotNull(questIdValue, QUEST_ID.toString());
         var questId = parsingStringToInt(questIdValue, ADD_INFO_QUEST_ID_TO_LOGGER, LOGGER);
 
-        var quest = repository.getById(questId);
+        var quest = questRepository.getById(questId);
         var answerInfo = quest.getAnswerDTO();
         return QuestDTO.builder()
                 .text(quest.getText())
@@ -70,7 +72,7 @@ public class QuestService extends Service<Integer, Quest> {
         var questId = parsingStringToInt(questIdValue, ADD_INFO_QUEST_ID_TO_LOGGER, LOGGER);
         var answerId = parsingStringToInt(answerValue, ADD_INFO_ANSWER_TO_LOGGER, LOGGER);
 
-        var quest = repository.getById(questId);
+        var quest = questRepository.getById(questId);
         return quest.isRightAnswer(answerId);
     }
 
