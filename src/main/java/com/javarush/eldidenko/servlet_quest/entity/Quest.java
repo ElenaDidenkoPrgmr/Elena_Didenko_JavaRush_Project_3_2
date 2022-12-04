@@ -25,7 +25,6 @@ public class Quest {
     public boolean isRightAnswer(int idAnswer) {
         var answer = answers.stream()
                 .filter(x -> x.getId() == idAnswer)
-
                 .findFirst()
                 .orElse(null);
         return answer == null ? false : answer.isRight();

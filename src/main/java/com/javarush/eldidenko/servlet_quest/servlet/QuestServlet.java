@@ -4,10 +4,10 @@ import com.javarush.eldidenko.servlet_quest.dto.RoomDTO;
 import com.javarush.eldidenko.servlet_quest.entity.User;
 
 import com.javarush.eldidenko.servlet_quest.service.QuestService;
+
 import static com.javarush.eldidenko.servlet_quest.servlet.WebConstants.*;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

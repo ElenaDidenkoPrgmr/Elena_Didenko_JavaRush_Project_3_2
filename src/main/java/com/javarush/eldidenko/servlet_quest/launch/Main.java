@@ -17,9 +17,9 @@ import org.apache.logging.log4j.Logger;
 
 public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
-    public static final String MESSAGE_TOMCAT_STARTED_SUCCESSFUL = "Tomcat started successful, webPort: ";
-    public static final String MESSAGE_APPLICATION_ROOT_FOLDER_SUCCESS = "application resolved root folder: ";
-    public static final String MESSAGE_APPLICATION_ROOT_FOLDER_ERROR = "root folder doesnt resolved: ";
+    private static final String MESSAGE_TOMCAT_STARTED_SUCCESSFUL = "Tomcat started successful, webPort: ";
+    private static final String MESSAGE_APPLICATION_ROOT_FOLDER_SUCCESS = "application resolved root folder: ";
+    private static final String MESSAGE_APPLICATION_ROOT_FOLDER_ERROR = "root folder doesnt resolved: ";
 
     private static File getRootFolder() {
         try {
@@ -75,7 +75,7 @@ public class Main {
         WebResourceSet resourceSet;
         if (additionWebInfClassesFolder.exists()) {
             resourceSet = new DirResourceSet(resources, "/WEB-INF/classes", additionWebInfClassesFolder.getAbsolutePath(), "/");
-            LOGGER.debug("loading WEB-INF resources from as '" + additionWebInfClassesFolder.getAbsolutePath() + "'");
+            LOGGER.debug("loading WEB-INF resources from as '{}'", additionWebInfClassesFolder.getAbsolutePath());
         } else {
             resourceSet = new EmptyResourceSet(resources);
         }

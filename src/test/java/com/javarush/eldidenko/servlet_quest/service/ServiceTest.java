@@ -2,7 +2,6 @@ package com.javarush.eldidenko.servlet_quest.service;
 
 import com.javarush.eldidenko.servlet_quest.entity.User;
 import com.javarush.eldidenko.servlet_quest.repository.Repository;
-import com.javarush.eldidenko.servlet_quest.service.Service;
 import com.javarush.eldidenko.servlet_quest.service.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +11,7 @@ import org.mockito.Mock;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ServiceTest {
-    private Service<Integer, String> service;
+    private Service<String, User> service;
 
     @Mock
     private Repository<String, User> repository;

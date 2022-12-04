@@ -10,6 +10,7 @@ import com.javarush.eldidenko.servlet_quest.repository.Repository;
 import com.javarush.eldidenko.servlet_quest.repository.RoomRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import static com.javarush.eldidenko.servlet_quest.servlet.WebConstants.*;
 
 import javax.servlet.*;
@@ -24,8 +25,7 @@ import java.util.List;
 @WebServlet(name = "roomServlet", value = "/room")
 public class RoomServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(RoomServlet.class);
-    public static final String USER_GAME_OVER_STARTING = "User: ";
-    public static final String USER_GAME_OVER_ENDING = " ends game";
+    private static final String USER_GAME_OVER = "User: {} ends game";
     private Repository<Integer, Room> roomRepository = null;
     private Repository<Integer, Npc> npcRepository = null;
     private User user = null;
@@ -50,14 +50,14 @@ public class RoomServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         var session = request.getSession();
-        if (user == null){
+        if (user == null) {
             getServletContext().getRequestDispatcher(INDEX_JSP.toString()).forward(request, response);
         }
 
         var currentRoomId = user.getCurrentRoomId();
         if (currentRoomId == Room.FINISH_ROOM_ID) {
             getServletContext().getRequestDispatcher(GAME_OVER_JSP.toString()).forward(request, response);
-            LOGGER.debug(USER_GAME_OVER_STARTING + user.getName() + USER_GAME_OVER_ENDING);
+            LOGGER.debug(USER_GAME_OVER, user.getName());
             return;
         }
 
@@ -73,10 +73,10 @@ public class RoomServlet extends HttpServlet {
         List<NpcDTO> npcList = new ArrayList<>();
         for (var npcId : currentRoom.getNpc()) {
             npcList.add(NpcDTO.builder()
-                            .id(npcId)
-                            .name(npcRepository.getById(npcId).getName())
-                            .avatar(npcRepository.getById(npcId).getAvatar())
-                            .description(npcRepository.getById(npcId).getDescription())
+                    .id(npcId)
+                    .name(npcRepository.getById(npcId).getName())
+                    .avatar(npcRepository.getById(npcId).getAvatar())
+                    .description(npcRepository.getById(npcId).getDescription())
                     .build());
 
         }

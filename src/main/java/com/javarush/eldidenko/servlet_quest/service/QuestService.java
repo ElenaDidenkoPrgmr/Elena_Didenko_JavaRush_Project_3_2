@@ -8,11 +8,11 @@ import com.javarush.eldidenko.servlet_quest.repository.Repository;
 import com.javarush.eldidenko.servlet_quest.service.exception.ServiceException;
 
 import static com.javarush.eldidenko.servlet_quest.servlet.WebConstants.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.function.BiFunction;
-
 
 
 public class QuestService extends Service<Integer, Quest> {
@@ -60,8 +60,8 @@ public class QuestService extends Service<Integer, Quest> {
             user.setLevel(currentRoomLevel + 1);
         }
 
-        BiFunction<Integer, Integer, Integer> calcPoint = (x,y) -> x + y * COEFFICIENT_POINT;
-        user.setPoint(calcPoint.apply(currentPoint,currentRoomLevel));
+        BiFunction<Integer, Integer, Integer> calcPoint = (x, y) -> x + y * COEFFICIENT_POINT;
+        user.setPoint(calcPoint.apply(currentPoint, currentRoomLevel));
     }
 
     public boolean questIsSuccess(String questIdValue, String answerValue) {

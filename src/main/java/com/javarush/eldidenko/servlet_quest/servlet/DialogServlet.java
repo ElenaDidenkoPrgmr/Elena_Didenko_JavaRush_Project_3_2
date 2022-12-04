@@ -9,13 +9,14 @@ import com.javarush.eldidenko.servlet_quest.repository.NpcRepository;
 import com.javarush.eldidenko.servlet_quest.repository.Repository;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import static com.javarush.eldidenko.servlet_quest.servlet.WebConstants.*;
+
 import java.io.IOException;
 
 @WebServlet(name = "dialogServlet", value = "/dialog")

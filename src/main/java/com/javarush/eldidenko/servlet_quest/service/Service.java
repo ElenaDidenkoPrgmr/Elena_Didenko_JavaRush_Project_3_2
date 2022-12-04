@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 public class Service<K, T> {
     final Repository<K, T> repository;
 
-    public Service(Repository repository) {
+    public Service(Repository<K, T> repository) {
         this.repository = repository;
     }
 
