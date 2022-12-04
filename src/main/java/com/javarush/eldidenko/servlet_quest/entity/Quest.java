@@ -23,10 +23,10 @@ public class Quest {
     }
 
     public boolean isRightAnswer(int idAnswer) {
-        var answer = answers.stream()
-                .filter(x -> x.getId() == idAnswer)
+        var currentAnswer = answers.stream()
+                .filter(answer -> answer.getId() == idAnswer)
                 .findFirst()
                 .orElse(null);
-        return answer == null ? false : answer.isRight();
+        return currentAnswer == null ? false : currentAnswer.isRight();
     }
 }
