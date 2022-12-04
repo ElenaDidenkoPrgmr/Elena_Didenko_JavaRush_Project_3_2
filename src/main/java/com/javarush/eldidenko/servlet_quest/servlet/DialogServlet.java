@@ -15,7 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import static com.javarush.eldidenko.servlet_quest.servlet.WebConstants.*;
 import java.io.IOException;
 
 @WebServlet(name = "dialogServlet", value = "/dialog")
@@ -27,13 +27,13 @@ public class DialogServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         var servletContext = config.getServletContext();
-        npcRepository = (NpcRepository) servletContext.getAttribute(WebConstants.NPC_REPOSITORY.toString());
-        dialogRepository = (DialogRepository) servletContext.getAttribute(WebConstants.DIALOG_REPOSITORY.toString());
+        npcRepository = (NpcRepository) servletContext.getAttribute(NPC_REPOSITORY.toString());
+        dialogRepository = (DialogRepository) servletContext.getAttribute(DIALOG_REPOSITORY.toString());
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getServletContext().getRequestDispatcher(WebConstants.DIALOG_JSP.toString()).forward(request, response);
+        getServletContext().getRequestDispatcher(DIALOG_JSP.toString()).forward(request, response);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class DialogServlet extends HttpServlet {
         var session = request.getSession();
 
         Npc npc;
-        var npcId = request.getParameter(WebConstants.NPC_ID.toString());
+        var npcId = request.getParameter(NPC_ID.toString());
         if (npcId != null) {
             npc = npcRepository.getById(Integer.parseInt(npcId));
 
@@ -52,21 +52,21 @@ public class DialogServlet extends HttpServlet {
                     .description(npc.getDescription())
                     .build();
 
-            session.setAttribute(WebConstants.NPC_INFO.toString(), npcInfo);
+            session.setAttribute(NPC_INFO.toString(), npcInfo);
         } else {
-            var npcDTO = (NpcDTO) session.getAttribute(WebConstants.NPC_INFO.toString());
+            var npcDTO = (NpcDTO) session.getAttribute(NPC_INFO.toString());
             npc = npcRepository.getById(npcDTO.getId());
         }
 
-        var questId = request.getParameter(WebConstants.QUEST_ID.toString());
+        var questId = request.getParameter(QUEST_ID.toString());
         if (questId != null) {
-            session.setAttribute(WebConstants.QUEST_ID.toString(), questId);
-            response.sendRedirect(WebConstants.QUEST_PAGE.toString());
+            session.setAttribute(QUEST_ID.toString(), questId);
+            response.sendRedirect(QUEST_PAGE.toString());
             return;
         }
 
         Dialog dialog;
-        var nextQuestionId = request.getParameter(WebConstants.NEXT_QUESTION.toString());
+        var nextQuestionId = request.getParameter(NEXT_QUESTION.toString());
 
         if (nextQuestionId != null) {
             dialog = dialogRepository.getById(Integer.parseInt(nextQuestionId));
@@ -75,7 +75,7 @@ public class DialogServlet extends HttpServlet {
             dialog = dialogRepository.getById(questionId);
         }
 
-        session.setAttribute(WebConstants.DIALOG.toString(), dialog);
-        response.sendRedirect(WebConstants.DIALOG_PAGE.toString());
+        session.setAttribute(DIALOG.toString(), dialog);
+        response.sendRedirect(DIALOG_PAGE.toString());
     }
 }

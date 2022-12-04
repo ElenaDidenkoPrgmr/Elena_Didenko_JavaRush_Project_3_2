@@ -10,13 +10,13 @@ import com.javarush.eldidenko.servlet_quest.repository.Repository;
 import com.javarush.eldidenko.servlet_quest.repository.RoomRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import static com.javarush.eldidenko.servlet_quest.servlet.WebConstants.*;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +34,15 @@ public class RoomServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         var servletContext = config.getServletContext();
-        roomRepository = (RoomRepository) servletContext.getAttribute(WebConstants.ROOMS_REPOSITORY.toString());
-        npcRepository = (NpcRepository) servletContext.getAttribute(WebConstants.NPC_REPOSITORY.toString());
+        roomRepository = (RoomRepository) servletContext.getAttribute(ROOMS_REPOSITORY.toString());
+        npcRepository = (NpcRepository) servletContext.getAttribute(NPC_REPOSITORY.toString());
     }
 
     @Override
     public void service(ServletRequest request, ServletResponse response)
             throws ServletException, IOException {
         var httpServletRequest = (HttpServletRequest) request;
-        user = (User) httpServletRequest.getSession().getAttribute(WebConstants.USER.toString());
+        user = (User) httpServletRequest.getSession().getAttribute(USER.toString());
         super.service(request, response);
     }
 
@@ -51,12 +51,12 @@ public class RoomServlet extends HttpServlet {
             throws ServletException, IOException {
         var session = request.getSession();
         if (user == null){
-            getServletContext().getRequestDispatcher(WebConstants.INDEX_JSP.toString()).forward(request, response);
+            getServletContext().getRequestDispatcher(INDEX_JSP.toString()).forward(request, response);
         }
 
         var currentRoomId = user.getCurrentRoomId();
         if (currentRoomId == Room.FINISH_ROOM_ID) {
-            getServletContext().getRequestDispatcher(WebConstants.GAME_OVER_JSP.toString()).forward(request, response);
+            getServletContext().getRequestDispatcher(GAME_OVER_JSP.toString()).forward(request, response);
             LOGGER.debug(USER_GAME_OVER_STARTING + user.getName() + USER_GAME_OVER_ENDING);
             return;
         }
@@ -68,7 +68,7 @@ public class RoomServlet extends HttpServlet {
                 .level(currentRoom.getLevel())
                 .build();
 
-        session.setAttribute(WebConstants.CURRENT_ROOM.toString(), roomInfo);
+        session.setAttribute(CURRENT_ROOM.toString(), roomInfo);
 
         List<NpcDTO> npcList = new ArrayList<>();
         for (var npcId : currentRoom.getNpc()) {
@@ -80,16 +80,16 @@ public class RoomServlet extends HttpServlet {
                     .build());
 
         }
-        session.setAttribute(WebConstants.NPC_REPOSITORY.toString(), npcList);
-        getServletContext().getRequestDispatcher(WebConstants.ROOM_JSP.toString()).forward(request, response);
+        session.setAttribute(NPC_REPOSITORY.toString(), npcList);
+        getServletContext().getRequestDispatcher(ROOM_JSP.toString()).forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        var nextRoom = Integer.valueOf(request.getParameter(WebConstants.NEXT_ROOM.toString()));
+        var nextRoom = Integer.valueOf(request.getParameter(NEXT_ROOM.toString()));
         if (nextRoom != null) {
             user.setCurrentRoomId(nextRoom);
         }
-        response.sendRedirect(WebConstants.ROOM_PAGE.toString());
+        response.sendRedirect(ROOM_PAGE.toString());
     }
 }

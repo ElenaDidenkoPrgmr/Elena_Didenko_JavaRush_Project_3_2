@@ -3,16 +3,12 @@ package com.javarush.eldidenko.servlet_quest.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.javarush.eldidenko.servlet_quest.dto.AnswerToQuestDTO;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Getter
-@Setter
 @Data
 @NoArgsConstructor
 public class Quest {
@@ -29,6 +25,7 @@ public class Quest {
     public boolean isRightAnswer(int idAnswer) {
         var answer = answers.stream()
                 .filter(x -> x.getId() == idAnswer)
+
                 .findFirst()
                 .orElse(null);
         return answer == null ? false : answer.isRight();

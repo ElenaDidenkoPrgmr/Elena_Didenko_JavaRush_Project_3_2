@@ -37,7 +37,7 @@ public class LoginService extends Service<String, User> {
                 .build();
 
         repository.add(userName, user);
-        LOGGER.debug("User: " + userName + " starts game");
+        LOGGER.debug("User: {} starts game",userName);
         return user;
     }
 }

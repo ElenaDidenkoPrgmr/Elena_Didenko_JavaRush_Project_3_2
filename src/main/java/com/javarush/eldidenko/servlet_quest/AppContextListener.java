@@ -1,7 +1,6 @@
 package com.javarush.eldidenko.servlet_quest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.javarush.eldidenko.servlet_quest.entity.Npc;
 import com.javarush.eldidenko.servlet_quest.entity.Quest;
@@ -115,7 +114,7 @@ public class AppContextListener implements ServletContextListener {
         try {
             dialogsArray = mapper.readValue(contents, Dialog[].class);
         } catch (IOException e) {
-            String error = MESSAGE_ERROR_INITIALIZATION_DIALOG_REPOSITORY + e;
+            var error = MESSAGE_ERROR_INITIALIZATION_DIALOG_REPOSITORY + e;
             LOGGER.error(error);
             throw new RuntimeException(error);
         }
